@@ -4,26 +4,25 @@ using UnityEngine;
 
 public class Collision : MonoBehaviour {
 
-    public GameObject InputManager;
-    public bool RightHand;
+	private Vector3 oldPos;
+    
+
+
+	void LateUpdate() {
+
+		oldPos = transform.position;
+
+	}
 
 
     void OnTriggerEnter(Collider other)
     {
-        if (RightHand)
-        {
-            if (!OVRInput.Get(OVRInput.Button.SecondaryHandTrigger))
-            {
-                InputManager.GetComponent<InputManager>().RightCollisionObject = other.gameObject;
-            }
-        }
-        else
-        {
-            if (!OVRInput.Get(OVRInput.Button.PrimaryHandTrigger))
-            {
-                InputManager.GetComponent<InputManager>().LeftCollisionObject = other.gameObject;
-            }
-        }
+		
+		
+		if (other.gameObject.CompareTag ("Wall")) {
+			Debug.Log ("Hit Wall");
+			transform.position = oldPos;
+		}
     }
 
 
@@ -34,20 +33,7 @@ public class Collision : MonoBehaviour {
 
     void OnTriggerExit(Collider other)
     {
-        if (RightHand)
-        {
-            if (!OVRInput.Get(OVRInput.Button.SecondaryHandTrigger))
-            {
-                InputManager.GetComponent<InputManager>().RightCollisionObject = null;
-            }
-        }
-        else
-        {
-            if (!OVRInput.Get(OVRInput.Button.PrimaryHandTrigger))
-            {
-                InputManager.GetComponent<InputManager>().LeftCollisionObject = null;
-            }
-        }
+        
     }
 
 

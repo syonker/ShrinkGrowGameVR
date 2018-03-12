@@ -9,31 +9,29 @@ public class InputManager : MonoBehaviour {
     public GameObject RightHand;
     public GameObject LeftHand;
 
-    //other methods
-    public GameObject RightCollisionObject;
-    public GameObject LeftCollisionObject;
 
-
-    private bool firstGrabLeft = true;
-    private bool firstGrabRight = true;
-    private Vector3 offsetLeft;
-    private Vector3 offsetRight;
-
-
-
-
+	private LineRenderer Line;
+	private bool firstLeftTrigger;
+	private bool firstRightTrigger;
 
     // Use this for initialization
     void Start () {
-        offsetLeft = Vector3.zero;
-        offsetRight = Vector3.zero;
+		Line = this.GetComponent<LineRenderer> ();
+
+		firstLeftTrigger = true;
+		firstRightTrigger = true;
     }
+
+	void FixedUpdate() {
+
+		OVRInput.FixedUpdate ();
+	}
 
     // Update is called once per frame
     void Update()
     {
 
-
+		/*
         //movement with left stick
         Vector2 leftStick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
         float vertical = leftStick.y;
@@ -48,74 +46,107 @@ public class InputManager : MonoBehaviour {
         {
             Player.transform.RotateAround(Player.transform.position, Player.transform.up, horizontal);
         }
+		*/
 
+		//Debug.Log ("");
 
-        /*
-
-
-        //object grabbing
-
-        //left hand
-        if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger))
-        {
-            if (LeftCollisionObject != null)
-            {
-                if (firstGrabLeft)
-                {
-                    //LeftHand.GetComponent<Collider>().isTrigger = false;
-                    offsetLeft = LeftHand.transform.position - LeftCollisionObject.transform.position;
-                    LeftCollisionObject.GetComponent<Rigidbody>().useGravity = false;
-                    firstGrabLeft = false;
-                }
-
-                LeftCollisionObject.transform.position = LeftHand.transform.position - offsetLeft;
-
-            }
-        }
-        else
-        {
-            //drop object
-            if (!firstGrabLeft)
-            {
-                //LeftHand.GetComponent<Collider>().isTrigger = false;
-                LeftCollisionObject.GetComponent<Rigidbody>().useGravity = true;
-                firstGrabLeft = true;
-            }
-        }
+		OVRInput.Update ();
 
 
 
-        //right hand
-        if (OVRInput.Get(OVRInput.Button.SecondaryHandTrigger))
-        {
-            if (RightCollisionObject != null)
-            {
-                if (firstGrabRight)
-                {
-                    //RightHand.GetComponent<Collider>().isTrigger = false;
-                    offsetRight = RightHand.transform.position - RightCollisionObject.transform.position;
-                    RightCollisionObject.GetComponent<Rigidbody>().useGravity = false;
-                    firstGrabRight = false;
-                }
+		if (OVRInput.Get (OVRInput.Button.PrimaryIndexTrigger)) {
 
-                RightCollisionObject.transform.position = RightHand.transform.position - offsetRight;
+			if (firstLeftTrigger) {
 
-            }
-        }
-        else
-        {
-            //drop object
-            if (!firstGrabRight)
-            {
-                //RightHand.GetComponent<Collider>().isTrigger = true;
-                RightCollisionObject.GetComponent<Rigidbody>().useGravity = true;
-                firstGrabRight = true;
-            }
+				firstLeftTrigger = false;
+				Debug.Log ("First left trigger");
 
-        }
-        */
+			} else {
+
+				if (OVRInput.Get (OVRInput.Button.SecondaryIndexTrigger)) {
+
+					if (firstRightTrigger) {
+						firstRightTrigger = false;
+						Debug.Log ("teleport");
+
+					}
 
 
+
+				} else {
+
+					if (!firstRightTrigger) {
+
+						firstRightTrigger = true;
+						Debug.Log ("release right");
+
+					}
+
+
+				}
+
+
+			}
+
+
+
+		} else {
+
+			if (!firstLeftTrigger) {
+
+				firstLeftTrigger = true;
+				Debug.Log ("release left");
+
+			}
+
+		}
+
+
+
+
+
+		/*
+
+		//if left trigger is just pressed
+		if (OVRInput.Get (OVRInput.Button.PrimaryIndexTrigger) && firstLeftTrigger) {
+
+			Debug.Log ("First Left");
+			ToggleLine (true);
+			firstLeftTrigger = false;
+
+			//if left trigger is held
+		} else if (OVRInput.Get (OVRInput.Button.PrimaryIndexTrigger)) {
+
+			UpdateLine ();
+
+
+
+			//pressed right trigger first time
+			if (OVRInput.Get (OVRInput.Button.SecondaryIndexTrigger) && firstRightTrigger) {
+
+				Teleport ();
+				firstRightTrigger = false;
+
+			} else if (!OVRInput.Get (OVRInput.Button.SecondaryIndexTrigger) && !firstRightTrigger) {
+
+				firstRightTrigger = true;
+			}
+			else if (OVRInput.Get (OVRInput.Button.SecondaryIndexTrigger)) {
+
+				Debug.Log ("Stuck with both on");
+
+			}
+
+
+		} else if  (!OVRInput.Get (OVRInput.Button.PrimaryIndexTrigger) && !firstLeftTrigger) {
+
+			ToggleLine (false);
+			firstLeftTrigger = true;
+
+		}
+			
+
+		*/
 
 
 
@@ -127,4 +158,60 @@ public class InputManager : MonoBehaviour {
 
 
     }
+
+
+	public void ToggleLine(bool LineOn) {
+
+		if (LineOn) {
+
+			Line.enabled = true;
+			Line.material.color = Color.blue;
+			UpdateLine ();
+
+		} else {
+			Line.enabled = false;
+		}
+			
+	}
+
+	public void UpdateLine() {
+
+		Line.SetPosition(0, RightHand.transform.position);
+		Line.SetPosition(1, RightHand.transform.position + RightHand.transform.forward * 100);
+
+	}
+
+	public void Teleport() {
+
+		Debug.Log ("Teleported");
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
