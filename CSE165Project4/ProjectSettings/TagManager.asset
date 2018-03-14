@@ -8,6 +8,7 @@ TagManager:
   - Medium
   - Small
   - Wall
+  - Floor
   layers:
   - Default
   - TransparentFX

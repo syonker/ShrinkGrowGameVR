@@ -28,6 +28,12 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class OVRGrabber : MonoBehaviour
 {
+
+
+    public GameObject InputManager;
+
+
+
     // Grip trigger thresholds for picking up objects, with some hysteresis.
     public float grabBegin = 0.55f;
     public float grabEnd = 0.35f;
@@ -171,7 +177,11 @@ public class OVRGrabber : MonoBehaviour
         if (grabbable == null) return;
 
 		GameObject grabbed = otherCollider.gameObject ?? otherCollider.transform.parent.gameObject;
-		if (grabbed.CompareTag ("Large")) return;
+
+        int Size = InputManager.GetComponent<InputManager>().SizeState;
+
+		if (Size != 3 && grabbed.CompareTag ("Large")) return;
+        if (Size == 1 && grabbed.CompareTag("Medium")) return;
 
         // Add the grabbable
         int refCount = 0;

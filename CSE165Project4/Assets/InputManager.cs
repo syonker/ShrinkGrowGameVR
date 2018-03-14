@@ -6,13 +6,23 @@ public class InputManager : MonoBehaviour {
 
     //hard set
     public GameObject Player;
+    public GameObject World;
+    public GameObject Ground;
     public GameObject RightHand;
     public GameObject LeftHand;
+    public GameObject Belt;
+    public GameObject Headset;
 
+    //accessed by other methods
+    public int SizeState = 2;
 
+    //method only
 	private LineRenderer Line;
 	private bool firstLeftTrigger;
 	private bool firstRightTrigger;
+    private Vector3 LargeSize = new Vector3(10.0f, 10.0f, 10.0f);
+    private Vector3 MediumSize = new Vector3(1.0f, 1.0f, 1.0f);
+    private Vector3 SmallSize = new Vector3(0.1f, 0.1f, 0.1f);
 
     // Use this for initialization
     void Start () {
@@ -22,16 +32,25 @@ public class InputManager : MonoBehaviour {
 		firstRightTrigger = true;
     }
 
-	void FixedUpdate() {
 
-		OVRInput.FixedUpdate ();
-	}
 
     // Update is called once per frame
     void Update()
     {
 
-		/*
+        
+        //move belt
+        Vector3 offset = new Vector3(Headset.transform.position.x, Player.transform.position.y * 0.75f, Headset.transform.position.z);
+        Belt.transform.position = offset;
+
+        //Need to make the belt face the way you are facing
+        //Belt.transform.right = -Headset.transform.right;
+
+        offset = (Player.transform.localScale.x * 0.2f) * Belt.transform.right;
+        Belt.transform.position = Belt.transform.position + offset;
+        
+
+        /*
         //movement with left stick
         Vector2 leftStick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
         float vertical = leftStick.y;
@@ -48,69 +67,10 @@ public class InputManager : MonoBehaviour {
         }
 		*/
 
-		//Debug.Log ("");
 
-		OVRInput.Update ();
+        //if left trigger is just pressed
+        if (OVRInput.Get (OVRInput.Button.PrimaryIndexTrigger) && firstLeftTrigger) {
 
-
-
-		if (OVRInput.Get (OVRInput.Button.PrimaryIndexTrigger)) {
-
-			if (firstLeftTrigger) {
-
-				firstLeftTrigger = false;
-				Debug.Log ("First left trigger");
-
-			} else {
-
-				if (OVRInput.Get (OVRInput.Button.SecondaryIndexTrigger)) {
-
-					if (firstRightTrigger) {
-						firstRightTrigger = false;
-						Debug.Log ("teleport");
-
-					}
-
-
-
-				} else {
-
-					if (!firstRightTrigger) {
-
-						firstRightTrigger = true;
-						Debug.Log ("release right");
-
-					}
-
-
-				}
-
-
-			}
-
-
-
-		} else {
-
-			if (!firstLeftTrigger) {
-
-				firstLeftTrigger = true;
-				Debug.Log ("release left");
-
-			}
-
-		}
-
-
-
-
-
-		/*
-
-		//if left trigger is just pressed
-		if (OVRInput.Get (OVRInput.Button.PrimaryIndexTrigger) && firstLeftTrigger) {
-
-			Debug.Log ("First Left");
 			ToggleLine (true);
 			firstLeftTrigger = false;
 
@@ -118,8 +78,6 @@ public class InputManager : MonoBehaviour {
 		} else if (OVRInput.Get (OVRInput.Button.PrimaryIndexTrigger)) {
 
 			UpdateLine ();
-
-
 
 			//pressed right trigger first time
 			if (OVRInput.Get (OVRInput.Button.SecondaryIndexTrigger) && firstRightTrigger) {
@@ -131,11 +89,6 @@ public class InputManager : MonoBehaviour {
 
 				firstRightTrigger = true;
 			}
-			else if (OVRInput.Get (OVRInput.Button.SecondaryIndexTrigger)) {
-
-				Debug.Log ("Stuck with both on");
-
-			}
 
 
 		} else if  (!OVRInput.Get (OVRInput.Button.PrimaryIndexTrigger) && !firstLeftTrigger) {
@@ -144,9 +97,42 @@ public class InputManager : MonoBehaviour {
 			firstLeftTrigger = true;
 
 		}
-			
 
-		*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //Handle temporary A Y B button presses
+
+        //A button pressed once
+        if (OVRInput.GetDown (OVRInput.Button.One))
+        {
+            if (SizeState > 1)
+            {
+                DecreaseSize();
+            }
+        }
+
+        //B button pressed once
+        else if (OVRInput.GetDown(OVRInput.Button.Two))
+        {
+            if (SizeState < 3)
+            {
+                IncreaseSize();
+            }
+        }
+
+
 
 
 
@@ -181,11 +167,64 @@ public class InputManager : MonoBehaviour {
 
 	}
 
-	public void Teleport() {
+    public void Teleport()
+    {
 
-		Debug.Log ("Teleported");
-	}
+        RaycastHit hit;
+        bool hitSomething = Physics.Raycast(RightHand.transform.position, RightHand.transform.forward, out hit);
 
+        if (hitSomething && hit.collider.gameObject.CompareTag("Floor"))
+        {
+            float offset = Player.transform.position.y - Ground.transform.position.y;
+            Vector3 newPos = new Vector3(hit.point.x, hit.point.y + offset, hit.point.z);
+            Player.transform.position = newPos;
+        }
+    }
+
+    public void IncreaseSize()
+    {
+        SizeState++;
+
+        if (SizeState == 3)
+        {
+            Player.transform.localScale = Player.transform.localScale * 10.0f;
+            Line.startWidth = Line.startWidth * 10.0f;
+            Line.endWidth = Line.endWidth * 10.0f;
+        }
+        else
+        {
+            Player.transform.localScale = Player.transform.localScale * 50.0f;
+            Line.startWidth = Line.startWidth * 50.0f;
+            Line.endWidth = Line.endWidth * 50.0f;
+        }
+
+        Vector3 shiftUp = new Vector3(Player.transform.position.x, Player.transform.localScale.y, Player.transform.position.z);
+        Player.transform.position = shiftUp;
+
+    }
+
+    public void DecreaseSize()
+    {
+        SizeState--;
+
+        if (SizeState == 2)
+        {
+            Player.transform.localScale = Player.transform.localScale / 10.0f;
+            Line.startWidth = Line.startWidth / 10.0f;
+            Line.endWidth = Line.endWidth / 10.0f;
+        }
+        else
+        {
+            Player.transform.localScale = Player.transform.localScale / 50.0f;
+            Line.startWidth = Line.startWidth / 50.0f;
+            Line.endWidth = Line.endWidth / 50.0f;
+        }
+
+        Vector3 shiftDown = new Vector3(Player.transform.position.x, Player.transform.localScale.y, Player.transform.position.z);
+        Player.transform.position = shiftDown;
+
+
+    }
 
 
 
