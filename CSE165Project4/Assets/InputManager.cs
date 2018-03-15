@@ -28,6 +28,10 @@ public class InputManager : MonoBehaviour {
     private float SmallToMedium = 50.0f;
     private float MediumToLarge = 10.0f;
     private float PlayerHeightOffset = 0.5f;
+    private Vector3 OGShrimpPos;
+    private Quaternion OGShrimpRot;
+    private Vector3 OGWatermelonPos;
+    private Quaternion OGWatermelonRot;
 
     // Use this for initialization
     void Start () {
@@ -42,6 +46,13 @@ public class InputManager : MonoBehaviour {
 
 		firstLeftTrigger = true;
 		firstRightTrigger = true;
+
+        OGShrimpPos = Shrimp.transform.localPosition;
+        OGShrimpRot = Shrimp.transform.localRotation;
+        OGWatermelonPos = Watermelon.transform.localPosition;
+        OGWatermelonRot = Watermelon.transform.localRotation;
+
+        MoveBelt();
     }
 
 
@@ -51,16 +62,22 @@ public class InputManager : MonoBehaviour {
     {
 
 
-        //move belt
-        Vector3 offset = new Vector3(Headset.transform.position.x, Player.transform.localScale.y, Headset.transform.position.z);
-        Belt.transform.position = offset;
+        if (!ShrimpGrabbed && !WatermelonGrabbed)
+        {
+            MoveBelt();
+        }
 
-        //Need to make the belt face the way you are facing
-        //Belt.transform.right = -Headset.transform.right;
 
-        offset = (Player.transform.localScale.x * 0.2f) * Belt.transform.right;
-        Belt.transform.position = Belt.transform.position + offset;
-        
+        if (ShrimpGrabbed)
+        {
+            Eat(Shrimp);
+        }
+
+        if (WatermelonGrabbed)
+        {
+            Eat(Watermelon);
+        }
+
 
         /*
         //movement with left stick
@@ -196,9 +213,71 @@ public class InputManager : MonoBehaviour {
         }
     }
 
+
+    public void MoveBelt()
+    {
+        Vector3 offset = new Vector3(Headset.transform.position.x, Player.transform.localScale.y, Headset.transform.position.z);
+
+        Belt.transform.position = offset;
+        offset = (Player.transform.localScale.x * 0.2f) * Belt.transform.right;
+        Belt.transform.position = Belt.transform.position + offset;
+
+        /*
+        if (!ShrimpGrabbed)
+        {
+
+        }
+        */
+    }
+
+    public void ResetShrimp()
+    {
+        Shrimp.transform.localPosition = OGShrimpPos;
+        Shrimp.transform.localRotation = OGShrimpRot;
+    }
+
+    public void ResetWatermelon()
+    {
+        Watermelon.transform.localPosition = OGWatermelonPos;
+        Watermelon.transform.localRotation = OGWatermelonRot;
+    }
+
+    public void Eat(GameObject food)
+    {
+        float dist = (food.transform.position - Headset.transform.position).magnitude;
+        if (dist < (Player.transform.localScale.y / 5.0f))
+        {
+            if (food.CompareTag("Shrimp"))
+            {
+                DecreaseSize();
+                ResetShrimp();
+
+            } else if (food.CompareTag("Watermelon"))
+            {
+                IncreaseSize();
+                ResetWatermelon();
+            } else
+            {
+                return;
+            }
+
+            //force drop the items held
+            RightHand.GetComponent<OVRGrabber>().ForceRelease(RightHand.GetComponent<OVRGrabber>().grabbedObject);
+            LeftHand.GetComponent<OVRGrabber>().ForceRelease(LeftHand.GetComponent<OVRGrabber>().grabbedObject);
+
+        }
+
+
+    }
+
     //Increase the players size
     public void IncreaseSize()
     {
+        if (SizeState == 3)
+        {
+            return;
+        }
+
         SizeState++;
 
         //Medium to Large
@@ -226,6 +305,11 @@ public class InputManager : MonoBehaviour {
     //Decrease the players size
     public void DecreaseSize()
     {
+        if (SizeState == 1)
+        {
+            return;
+        }
+
         SizeState--;
 
         //Large to Medium

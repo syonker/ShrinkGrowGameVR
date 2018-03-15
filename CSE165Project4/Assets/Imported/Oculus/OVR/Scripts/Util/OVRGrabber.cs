@@ -198,11 +198,20 @@ public class OVRGrabber : MonoBehaviour
 
 
         GameObject grabbed = otherCollider.gameObject ?? otherCollider.transform.parent.gameObject;
-        if (grabbed.CompareTag("Shrimp")) InputManager.GetComponent<InputManager>().ShrimpGrabbed = false;
-        if (grabbed.CompareTag("Watermelon")) InputManager.GetComponent<InputManager>().WatermelonGrabbed = false;
+        if (grabbed.CompareTag("Shrimp"))
+        {
+            InputManager.GetComponent<InputManager>().ShrimpGrabbed = false;
+            InputManager.GetComponent<InputManager>().ResetShrimp();
+        }
+        if (grabbed.CompareTag("Watermelon"))
+        {
+            InputManager.GetComponent<InputManager>().WatermelonGrabbed = false;
+            InputManager.GetComponent<InputManager>().ResetWatermelon();
+        }
 
-        // Remove the grabbable
-        int refCount = 0;
+
+            // Remove the grabbable
+            int refCount = 0;
         bool found = m_grabCandidates.TryGetValue(grabbable, out refCount);
         if (!found)
         {
