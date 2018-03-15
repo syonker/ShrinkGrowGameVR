@@ -31,7 +31,7 @@ public class OVRGrabber : MonoBehaviour
 
 
     public GameObject InputManager;
-
+    public GameObject Player;
 
 
     // Grip trigger thresholds for picking up objects, with some hysteresis.
@@ -364,7 +364,11 @@ public class OVRGrabber : MonoBehaviour
 			Vector3 linearVelocity = trackingSpace.orientation * OVRInput.GetLocalControllerVelocity(m_controller);
 			Vector3 angularVelocity = trackingSpace.orientation * OVRInput.GetLocalControllerAngularVelocity(m_controller);
 
-            GrabbableRelease(linearVelocity, angularVelocity);
+            float scale = Player.transform.localScale.y;
+
+            //if small need to increase the force here
+
+            GrabbableRelease(linearVelocity * scale, angularVelocity * scale);
         }
 
         // Re-enable grab volumes to allow overlap events

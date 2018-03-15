@@ -769,8 +769,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 580225998}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.8569999, y: 0.29, z: 8.879}
-  m_LocalScale: {x: 0.120324396, y: 0.120324425, z: 0.120324425}
+  m_LocalPosition: {x: -2.8569999, y: 0.05, z: 8.879}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
   m_Father: {fileID: 588530303}
   m_RootOrder: 4
@@ -1142,6 +1142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InputManager: {fileID: 108264982}
+  Player: {fileID: 552117766}
   grabBegin: 0.55
   grabEnd: 0.35
   m_parentHeldObject: 0
@@ -1189,6 +1190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InputManager: {fileID: 108264982}
+  Player: {fileID: 552117766}
   grabBegin: 0.55
   grabEnd: 0.35
   m_parentHeldObject: 0
@@ -1328,9 +1330,9 @@ Rigidbody:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1607113695}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.05
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
