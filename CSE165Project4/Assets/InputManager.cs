@@ -26,7 +26,7 @@ public class InputManager : MonoBehaviour {
 	private bool firstLeftTrigger;
 	private bool firstRightTrigger;
     private float SmallToMedium = 50.0f;
-    private float MediumToLarge = 10.0f;
+    private float MediumToLarge = 8.0f;
     private float PlayerHeightOffset = 0.5f;
     private Vector3 OGShrimpPos;
     private Quaternion OGShrimpRot;
