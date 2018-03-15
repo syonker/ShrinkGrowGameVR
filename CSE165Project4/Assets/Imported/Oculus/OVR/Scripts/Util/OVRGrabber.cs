@@ -179,9 +179,11 @@ public class OVRGrabber : MonoBehaviour
 		GameObject grabbed = otherCollider.gameObject ?? otherCollider.transform.parent.gameObject;
 
         int Size = InputManager.GetComponent<InputManager>().SizeState;
-
 		if (Size != 3 && grabbed.CompareTag ("Large")) return;
         if (Size == 1 && grabbed.CompareTag("Medium")) return;
+
+        if (grabbed.CompareTag("Shrimp")) InputManager.GetComponent<InputManager>().ShrimpGrabbed = true;
+        if (grabbed.CompareTag("Watermelon")) InputManager.GetComponent<InputManager>().WatermelonGrabbed = true;
 
         // Add the grabbable
         int refCount = 0;
@@ -193,6 +195,11 @@ public class OVRGrabber : MonoBehaviour
     {
 		OVRGrabbable grabbable = otherCollider.GetComponent<OVRGrabbable>() ?? otherCollider.GetComponentInParent<OVRGrabbable>();
         if (grabbable == null) return;
+
+
+        GameObject grabbed = otherCollider.gameObject ?? otherCollider.transform.parent.gameObject;
+        if (grabbed.CompareTag("Shrimp")) InputManager.GetComponent<InputManager>().ShrimpGrabbed = false;
+        if (grabbed.CompareTag("Watermelon")) InputManager.GetComponent<InputManager>().WatermelonGrabbed = false;
 
         // Remove the grabbable
         int refCount = 0;

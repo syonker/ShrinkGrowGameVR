@@ -9,6 +9,8 @@ TagManager:
   - Small
   - Wall
   - Floor
+  - Shrimp
+  - Watermelon
   layers:
   - Default
   - TransparentFX

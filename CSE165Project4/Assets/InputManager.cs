@@ -12,21 +12,33 @@ public class InputManager : MonoBehaviour {
     public GameObject LeftHand;
     public GameObject Belt;
     public GameObject Headset;
+    public GameObject PlayerController;
+    public GameObject Shrimp;
+    public GameObject Watermelon;
 
     //accessed by other methods
     public int SizeState = 2;
+    public bool ShrimpGrabbed = false;
+    public bool WatermelonGrabbed = false;
 
     //method only
-	private LineRenderer Line;
+    private LineRenderer Line;
 	private bool firstLeftTrigger;
 	private bool firstRightTrigger;
-    private Vector3 LargeSize = new Vector3(10.0f, 10.0f, 10.0f);
-    private Vector3 MediumSize = new Vector3(1.0f, 1.0f, 1.0f);
-    private Vector3 SmallSize = new Vector3(0.1f, 0.1f, 0.1f);
+    private float SmallToMedium = 50.0f;
+    private float MediumToLarge = 10.0f;
+    private float PlayerHeightOffset = 0.5f;
 
     // Use this for initialization
     void Start () {
-		Line = this.GetComponent<LineRenderer> ();
+
+        Player.transform.localScale *= PlayerHeightOffset;
+        Vector3 pos = new Vector3(Player.transform.position.x, Player.transform.localScale.y, Player.transform.position.z);
+        Player.transform.position = pos;
+
+        PlayerController.GetComponent<CharacterController>().radius /= Player.transform.localScale.y;
+
+        Line = this.GetComponent<LineRenderer> ();
 
 		firstLeftTrigger = true;
 		firstRightTrigger = true;
@@ -38,9 +50,9 @@ public class InputManager : MonoBehaviour {
     void Update()
     {
 
-        
+
         //move belt
-        Vector3 offset = new Vector3(Headset.transform.position.x, Player.transform.position.y * 0.75f, Headset.transform.position.z);
+        Vector3 offset = new Vector3(Headset.transform.position.x, Player.transform.localScale.y, Headset.transform.position.z);
         Belt.transform.position = offset;
 
         //Need to make the belt face the way you are facing
@@ -74,7 +86,7 @@ public class InputManager : MonoBehaviour {
 			ToggleLine (true);
 			firstLeftTrigger = false;
 
-			//if left trigger is held
+		//if left trigger is held
 		} else if (OVRInput.Get (OVRInput.Button.PrimaryIndexTrigger)) {
 
 			UpdateLine ();
@@ -85,12 +97,13 @@ public class InputManager : MonoBehaviour {
 				Teleport ();
 				firstRightTrigger = false;
 
+            //right trigger is held
 			} else if (!OVRInput.Get (OVRInput.Button.SecondaryIndexTrigger) && !firstRightTrigger) {
 
 				firstRightTrigger = true;
 			}
 
-
+        //left trigger released
 		} else if  (!OVRInput.Get (OVRInput.Button.PrimaryIndexTrigger) && !firstLeftTrigger) {
 
 			ToggleLine (false);
@@ -145,7 +158,7 @@ public class InputManager : MonoBehaviour {
 
     }
 
-
+    //Turn on and off the Teleport Line
 	public void ToggleLine(bool LineOn) {
 
 		if (LineOn) {
@@ -160,6 +173,7 @@ public class InputManager : MonoBehaviour {
 			
 	}
 
+    //Update the Teleport line
 	public void UpdateLine() {
 
 		Line.SetPosition(0, RightHand.transform.position);
@@ -167,6 +181,7 @@ public class InputManager : MonoBehaviour {
 
 	}
 
+    //Teleport
     public void Teleport()
     {
 
@@ -181,47 +196,57 @@ public class InputManager : MonoBehaviour {
         }
     }
 
+    //Increase the players size
     public void IncreaseSize()
     {
         SizeState++;
 
+        //Medium to Large
         if (SizeState == 3)
         {
-            Player.transform.localScale = Player.transform.localScale * 10.0f;
-            Line.startWidth = Line.startWidth * 10.0f;
-            Line.endWidth = Line.endWidth * 10.0f;
+            Player.transform.localScale = Player.transform.localScale * MediumToLarge;
+            Line.startWidth = Line.startWidth * MediumToLarge;
+            Line.endWidth = Line.endWidth * MediumToLarge;
         }
+        //Small to Medium
         else
         {
-            Player.transform.localScale = Player.transform.localScale * 50.0f;
-            Line.startWidth = Line.startWidth * 50.0f;
-            Line.endWidth = Line.endWidth * 50.0f;
+            Player.transform.localScale = Player.transform.localScale * SmallToMedium;
+            Line.startWidth = Line.startWidth * SmallToMedium;
+            Line.endWidth = Line.endWidth * SmallToMedium;
         }
 
         Vector3 shiftUp = new Vector3(Player.transform.position.x, Player.transform.localScale.y, Player.transform.position.z);
         Player.transform.position = shiftUp;
 
+        PlayerController.GetComponent<CharacterController>().radius /= Player.transform.localScale.y;
+
     }
 
+    //Decrease the players size
     public void DecreaseSize()
     {
         SizeState--;
 
+        //Large to Medium
         if (SizeState == 2)
         {
-            Player.transform.localScale = Player.transform.localScale / 10.0f;
-            Line.startWidth = Line.startWidth / 10.0f;
-            Line.endWidth = Line.endWidth / 10.0f;
+            Player.transform.localScale = Player.transform.localScale / MediumToLarge;
+            Line.startWidth = Line.startWidth / MediumToLarge;
+            Line.endWidth = Line.endWidth / MediumToLarge;
         }
+        //Medium to Small
         else
         {
-            Player.transform.localScale = Player.transform.localScale / 50.0f;
-            Line.startWidth = Line.startWidth / 50.0f;
-            Line.endWidth = Line.endWidth / 50.0f;
+            Player.transform.localScale = Player.transform.localScale / SmallToMedium;
+            Line.startWidth = Line.startWidth / SmallToMedium;
+            Line.endWidth = Line.endWidth / SmallToMedium;
         }
 
         Vector3 shiftDown = new Vector3(Player.transform.position.x, Player.transform.localScale.y, Player.transform.position.z);
         Player.transform.position = shiftDown;
+
+        PlayerController.GetComponent<CharacterController>().radius *= Player.transform.localScale.y;
 
 
     }
