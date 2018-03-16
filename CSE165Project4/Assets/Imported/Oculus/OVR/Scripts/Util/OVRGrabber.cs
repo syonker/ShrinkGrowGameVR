@@ -176,6 +176,8 @@ public class OVRGrabber : MonoBehaviour
 		OVRGrabbable grabbable = otherCollider.GetComponent<OVRGrabbable>() ?? otherCollider.GetComponentInParent<OVRGrabbable>();
         if (grabbable == null) return;
 
+        /*
+
 		GameObject grabbed = otherCollider.gameObject ?? otherCollider.transform.parent.gameObject;
 
         int Size = InputManager.GetComponent<InputManager>().SizeState;
@@ -184,6 +186,8 @@ public class OVRGrabber : MonoBehaviour
 
         if (grabbed.CompareTag("Shrimp")) InputManager.GetComponent<InputManager>().ShrimpGrabbed = true;
         if (grabbed.CompareTag("Watermelon")) InputManager.GetComponent<InputManager>().WatermelonGrabbed = true;
+
+        */
 
         // Add the grabbable
         int refCount = 0;
@@ -196,6 +200,7 @@ public class OVRGrabber : MonoBehaviour
 		OVRGrabbable grabbable = otherCollider.GetComponent<OVRGrabbable>() ?? otherCollider.GetComponentInParent<OVRGrabbable>();
         if (grabbable == null) return;
 
+        /*
 
         GameObject grabbed = otherCollider.gameObject ?? otherCollider.transform.parent.gameObject;
         if (grabbed.CompareTag("Shrimp"))
@@ -209,9 +214,10 @@ public class OVRGrabber : MonoBehaviour
             InputManager.GetComponent<InputManager>().ResetWatermelon();
         }
 
+        */
 
-            // Remove the grabbable
-            int refCount = 0;
+        // Remove the grabbable
+        int refCount = 0;
         bool found = m_grabCandidates.TryGetValue(grabbable, out refCount);
         if (!found)
         {
@@ -279,6 +285,19 @@ public class OVRGrabber : MonoBehaviour
             {
                 closestGrabbable.grabbedBy.OffhandGrabbed(closestGrabbable);
             }
+
+
+            //check what is grabbed ----------------------
+            GameObject grabbed = closestGrabbable.gameObject;
+
+            int Size = InputManager.GetComponent<InputManager>().SizeState;
+            if (Size != 3 && grabbed.CompareTag("Large")) return;
+            if (Size == 1 && grabbed.CompareTag("Medium")) return;
+
+            if (grabbed.CompareTag("Shrimp")) InputManager.GetComponent<InputManager>().ShrimpGrabbed = true;
+            if (grabbed.CompareTag("Watermelon")) InputManager.GetComponent<InputManager>().WatermelonGrabbed = true;
+            //----------------------------------------------
+
 
             m_grabbedObj = closestGrabbable;
             m_grabbedObj.GrabBegin(this, closestGrabbableCollider);
@@ -356,7 +375,30 @@ public class OVRGrabber : MonoBehaviour
     {
         if (m_grabbedObj != null)
         {
-			OVRPose localPose = new OVRPose { position = OVRInput.GetLocalControllerPosition(m_controller), orientation = OVRInput.GetLocalControllerRotation(m_controller) };
+
+
+            //Drop the food away from mouth ------------------------
+            GameObject grabbed = m_grabbedObj.gameObject;
+            if (grabbed.CompareTag("Shrimp"))
+            {
+                InputManager.GetComponent<InputManager>().ShrimpGrabbed = false;
+                InputManager.GetComponent<InputManager>().ResetShrimp();
+                GrabbableRelease(Vector3.zero, Vector3.zero);
+                GrabVolumeEnable(true);
+                return;
+            }
+            else if (grabbed.CompareTag("Watermelon"))
+            {
+                InputManager.GetComponent<InputManager>().WatermelonGrabbed = false;
+                InputManager.GetComponent<InputManager>().ResetWatermelon();
+                GrabbableRelease(Vector3.zero, Vector3.zero);
+                GrabVolumeEnable(true);
+                return;
+            }
+            //-----------------------------------------------------
+
+
+            OVRPose localPose = new OVRPose { position = OVRInput.GetLocalControllerPosition(m_controller), orientation = OVRInput.GetLocalControllerRotation(m_controller) };
             OVRPose offsetPose = new OVRPose { position = m_anchorOffsetPosition, orientation = m_anchorOffsetRotation };
             localPose = localPose * offsetPose;
 

@@ -15,6 +15,8 @@ public class InputManager : MonoBehaviour {
     public GameObject PlayerController;
     public GameObject Shrimp;
     public GameObject Watermelon;
+    public GameObject Door;
+    public GameObject ForceField;
 
     //accessed by other methods
     public int SizeState = 2;
@@ -32,6 +34,7 @@ public class InputManager : MonoBehaviour {
     private Quaternion OGShrimpRot;
     private Vector3 OGWatermelonPos;
     private Quaternion OGWatermelonRot;
+    private bool FirstDoor = true;
 
     // Use this for initialization
     void Start () {
@@ -60,6 +63,11 @@ public class InputManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+
+        if (!ForceField.activeSelf)
+        {
+            DoorOpen();
+        }
 
 
         if (!ShrimpGrabbed && !WatermelonGrabbed)
@@ -216,6 +224,18 @@ public class InputManager : MonoBehaviour {
 
     public void MoveBelt()
     {
+
+        //Debug.Log("Head: " + Headset.transform.localPosition.y);
+        if (Headset.transform.localPosition.y < -0.25f) {
+            Belt.SetActive(false);
+            return;
+        }
+
+        if (!Belt.activeSelf)
+        {
+            Belt.SetActive(true);
+        }
+
         Vector3 offset = new Vector3(Headset.transform.position.x, Player.transform.localScale.y, Headset.transform.position.z);
 
         Belt.transform.position = offset;
@@ -338,7 +358,20 @@ public class InputManager : MonoBehaviour {
 
 
 
+    public void DoorOpen()
+    {
 
+        if (SizeState == 2 && FirstDoor)
+        {
+            float dist = (Player.transform.position - Door.transform.position).magnitude;
+            if (dist < 40.0f)
+            {
+                Door.GetComponent<Animation>().Play();
+                FirstDoor = false;
+            }
+        }
+
+    }
 
 
 

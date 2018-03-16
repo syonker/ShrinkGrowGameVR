@@ -32,6 +32,9 @@ public class FieldCollision : MonoBehaviour {
         {
             Crack();
 
+            //explode car
+            Destroy(other.gameObject);
+
         }
 
     }
