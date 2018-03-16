@@ -22,6 +22,7 @@ public class InputManager : MonoBehaviour {
     public int SizeState = 2;
     public bool ShrimpGrabbed = false;
     public bool WatermelonGrabbed = false;
+    public bool HandInWall = false;
 
     //method only
     private LineRenderer Line;
@@ -209,6 +210,11 @@ public class InputManager : MonoBehaviour {
     //Teleport
     public void Teleport()
     {
+
+        if (HandInWall)
+        {
+            return;
+        }
 
         RaycastHit hit;
         bool hitSomething = Physics.Raycast(RightHand.transform.position, RightHand.transform.forward, out hit);

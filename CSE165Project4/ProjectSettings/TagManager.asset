@@ -11,6 +11,7 @@ TagManager:
   - Floor
   - Shrimp
   - Watermelon
+  - SF_Door
   layers:
   - Default
   - TransparentFX
