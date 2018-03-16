@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 553a20c1d0b231c439b5ce6cf9e32ef9
-timeCreated: 1521232669
+guid: c8983a2a1736cbd4d899181a08de8318
+timeCreated: 1521235787
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -12,15 +12,21 @@ ModelImporter:
     100008: pCube5
     100010: pCylinder1
     100012: polySurface1
-    100014: polySurface2
-    100016: transform1
-    100018: transform2
-    100020: transform3
-    100022: transform4
-    100024: transform5
-    100026: transform6
-    100028: transform7
-    100030: //RootNode
+    100014: polySurface1 1
+    100016: polySurface2
+    100018: polySurface3
+    100020: polySurface4
+    100022: transform1
+    100024: transform10
+    100026: transform2
+    100028: transform3
+    100030: transform4
+    100032: transform5
+    100034: transform6
+    100036: transform7
+    100038: transform8
+    100040: transform9
+    100042: //RootNode
     400000: pCube1
     400002: pCube2
     400004: pCube3
@@ -28,20 +34,26 @@ ModelImporter:
     400008: pCube5
     400010: pCylinder1
     400012: polySurface1
-    400014: polySurface2
-    400016: transform1
-    400018: transform2
-    400020: transform3
-    400022: transform4
-    400024: transform5
-    400026: transform6
-    400028: transform7
-    400030: //RootNode
+    400014: polySurface1 1
+    400016: polySurface2
+    400018: polySurface3
+    400020: polySurface4
+    400022: transform1
+    400024: transform10
+    400026: transform2
+    400028: transform3
+    400030: transform4
+    400032: transform5
+    400034: transform6
+    400036: transform7
+    400038: transform8
+    400040: transform9
+    400042: //RootNode
     2100000: lambert1
     2300000: pCube5
     3300000: pCube5
     4300000: pCube5
-    9500000: //RootNode
+    6400000: pCube5
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -74,7 +86,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -116,7 +128,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
