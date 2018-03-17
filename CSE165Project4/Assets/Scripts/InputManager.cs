@@ -35,6 +35,10 @@ public class InputManager : MonoBehaviour {
     private Vector3 OGWatermelonPos;
     private Quaternion OGWatermelonRot;
     private bool FirstDoor = true;
+    private Vector3 Hole1Pos;
+    private Vector3 Hole2Pos;
+    private Vector3 Hole2Dir;
+    private Vector3 Hole2Forward;
 
     // Use this for initialization
     void Start () {
@@ -56,6 +60,11 @@ public class InputManager : MonoBehaviour {
         OGWatermelonRot = Watermelon.transform.localRotation;
 
         MoveBelt();
+
+        Hole1Pos = new Vector3(-20682.0f, 0.0f, 27502.0f);
+        Hole2Pos = new Vector3(-20468.0f, 78.0f, 27701.0f);
+        Hole2Dir = new Vector3(-20469.0f, 78.0f, 27688.0f);
+        Hole2Forward = -Hole2Pos + Hole2Dir;
     }
 
 
@@ -64,12 +73,23 @@ public class InputManager : MonoBehaviour {
     void Update()
     {
 
-        //////////////////////////////////////
+        //Teleport between holes Scene 3
+        if(GameplayManager.GetComponent<GameplayManager>().SceneNumber == 3)
+        {
+            float dist = (Player.transform.position - Hole1Pos).magnitude;
+
+            if(dist < 8.0f)
+            {
+                //move to hole 2
+                Player.transform.position = new Vector3(Hole2Pos.x, Hole2Pos.y + Player.transform.localScale.y, Hole2Pos.z);
+                Player.transform.forward = Hole2Forward;
+            }
+        }
 
 
 
 
-        /////////////////////////////////////
+    
 
         if (!ForceField.activeSelf)
         {
