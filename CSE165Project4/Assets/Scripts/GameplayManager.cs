@@ -15,6 +15,7 @@ public class GameplayManager : MonoBehaviour {
 
     //private
     private Vector3 StartPos2 = new Vector3(-26300.0f, 6.0f, 8720.0f);
+    private Vector3 StartPos3 = new Vector3(-20580.0f, 6.0f, 27537.0f);
 
 
 	// Use this for initialization
@@ -51,6 +52,13 @@ public class GameplayManager : MonoBehaviour {
         InputManager.GetComponent<InputManager>().SizeChange = 10.0f;
         InputManager.GetComponent<InputManager>().IncreaseSizeScene2();
 
+    }
+
+    public void OpenScene3()
+    {
+        SceneNumber = 3;
+
+        Player.transform.position = StartPos3;
     }
 
 

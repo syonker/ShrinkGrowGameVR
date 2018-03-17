@@ -170,13 +170,21 @@ public class InputManager : MonoBehaviour {
             }
         }
 
-        //B button pressed once
+        //X button pressed once
         else if (OVRInput.GetDown(OVRInput.Button.Three))
         {
             if (SizeState == 2)
             {
                 GameplayManager.GetComponent<GameplayManager>().OpenScene2();
             }
+        }
+
+        //Y button pressed once
+        else if (OVRInput.GetDown(OVRInput.Button.Four))
+        {
+            
+                GameplayManager.GetComponent<GameplayManager>().OpenScene3();
+            
         }
 
 
