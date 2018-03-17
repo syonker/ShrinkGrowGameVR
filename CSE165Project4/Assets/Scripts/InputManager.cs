@@ -64,6 +64,13 @@ public class InputManager : MonoBehaviour {
     void Update()
     {
 
+        //////////////////////////////////////
+
+
+
+
+        /////////////////////////////////////
+
         if (!ForceField.activeSelf)
         {
             DoorOpen();
