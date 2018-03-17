@@ -1607,6 +1607,11 @@ MonoBehaviour:
   Door: {fileID: 1904091442}
   ForceField: {fileID: 606568845}
   GameplayManager: {fileID: 1697869070}
+  PasswordSymbol1: {fileID: 1239467481}
+  PasswordSymbol2: {fileID: 259648075}
+  PasswordSymbol3: {fileID: 801215380}
+  PasswordSymbol4: {fileID: 1020433693}
+  delete_key: {fileID: 136715947}
   SizeState: 2
   ShrimpGrabbed: 0
   WatermelonGrabbed: 0
@@ -6072,7 +6077,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400102, guid: 148ccca08374adf46a60a1d457714b33, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -20442.4
+      value: -20443.35
       objectReference: {fileID: 0}
     - target: {fileID: 400102, guid: 148ccca08374adf46a60a1d457714b33, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6796,7 +6801,7 @@ GameObject:
   - component: {fileID: 801215379}
   - component: {fileID: 801215378}
   m_Layer: 5
-  m_Name: Password Canvas (1)
+  m_Name: Password Canvas (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6814,7 +6819,7 @@ RectTransform:
   m_Children:
   - {fileID: 1614826573}
   m_Father: {fileID: 362628007}
-  m_RootOrder: 8
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -9136,7 +9141,7 @@ GameObject:
   - component: {fileID: 1239467484}
   - component: {fileID: 1239467483}
   m_Layer: 5
-  m_Name: Password Canvas (3)
+  m_Name: Password Canvas (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9154,7 +9159,7 @@ RectTransform:
   m_Children:
   - {fileID: 958060950}
   m_Father: {fileID: 362628007}
-  m_RootOrder: 10
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

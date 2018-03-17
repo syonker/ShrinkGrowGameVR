@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour {
 
@@ -17,6 +18,11 @@ public class InputManager : MonoBehaviour {
     public GameObject Door;
     public GameObject ForceField;
     public GameObject GameplayManager;
+    public GameObject PasswordSymbol1;
+    public Canvas PasswordSymbol2;
+    public Canvas PasswordSymbol3;
+    public Canvas PasswordSymbol4;
+    public GameObject delete_key;
 
     //accessed by other methods
     public int SizeState = 2;
@@ -25,6 +31,8 @@ public class InputManager : MonoBehaviour {
     public bool HandInWall = false;
     public float SizeChange = 6.0f;
     public float PlayerHeightOffset = 0.5f;
+
+
 
     //method only
     private LineRenderer Line;
@@ -39,6 +47,9 @@ public class InputManager : MonoBehaviour {
     private Vector3 Hole2Pos;
     private Vector3 Hole2Dir;
     private Vector3 Hole2Forward;
+    private int PasswordIndex = 1;
+    private int[] Password;
+
 
     // Use this for initialization
     void Start () {
@@ -65,8 +76,16 @@ public class InputManager : MonoBehaviour {
         Hole2Pos = new Vector3(-20468.0f, 78.0f, 27701.0f);
         Hole2Dir = new Vector3(-20469.0f, 78.0f, 27688.0f);
         Hole2Forward = -Hole2Pos + Hole2Dir;
-    }
 
+        //initialize password array
+        Password = new int[4];
+        for (int i = 0; i < 4; i++)
+        {
+            Password[i] = 0;
+        }
+
+
+    }
 
 
     // Update is called once per frame
@@ -272,6 +291,11 @@ public class InputManager : MonoBehaviour {
         {
             GameplayManager.GetComponent<GameplayManager>().OpenScene2();
         }
+        //check for symbolic input
+        else if (hitSomething)
+        {
+            CheckForSymbolicInput(hit.collider.gameObject);
+        }
     }
 
 
@@ -416,9 +440,169 @@ public class InputManager : MonoBehaviour {
     }
 
 
+    public void EnterKey(int key)
+    {
+        //delete key
+        if(key == 10)
+        {
+            if(PasswordIndex != 1)
+            {
+                //delete the symbol in the previous text
+                if (PasswordIndex == 2)
+                {
+                    Password[0] = 0;
+                    PasswordSymbol1.GetComponentInChildren<Text>().text = "";
+                    PasswordIndex--;
+                }
+                else if (PasswordIndex == 3)
+                {
+                    Password[1] = 0;
+                    PasswordSymbol2.GetComponentInChildren<Text>().text = "";
+                    PasswordIndex--;
+                }
+                else if (PasswordIndex == 4)
+                {
+                    Password[2] = 0;
+                    PasswordSymbol3.GetComponentInChildren<Text>().text = "";
+                    PasswordIndex--;
+                }
+                else if (PasswordIndex == 5)
+                {
+                    Password[3] = 0;
+                    PasswordSymbol4.GetComponentInChildren<Text>().text = "";
+                    PasswordIndex--;
+                }
 
 
+            }
+            return;
 
+        }
+        //enter key
+        else if (key == 11)
+        {
+            if (PasswordIndex == 5)
+            {
+                //check if password is correct:
+                if (Password[0] == 1 && Password[1] == 2 && Password[2] == 3 && Password[3] == 4)
+                {
+                    Debug.Log("You Win");
+                }
+                else
+                {
+                    //clear all texts
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Password[i] = 0;
+                    }
+
+                    PasswordIndex = 1;
+
+                    PasswordSymbol1.GetComponentInChildren<Text>().text = "";
+                    PasswordSymbol2.GetComponentInChildren<Text>().text = "";
+                    PasswordSymbol3.GetComponentInChildren<Text>().text = "";
+                    PasswordSymbol4.GetComponentInChildren<Text>().text = "";
+                }
+            }
+            else
+            {
+                //clear all texts
+                for (int i = 0; i < 4; i++)
+                {
+                    Password[i] = 0;
+                }
+
+                PasswordIndex = 1;
+
+                PasswordSymbol1.GetComponentInChildren<Text>().text = "";
+                PasswordSymbol2.GetComponentInChildren<Text>().text = "";
+                PasswordSymbol3.GetComponentInChildren<Text>().text = "";
+                PasswordSymbol4.GetComponentInChildren<Text>().text = "";
+
+            }
+            return;
+        }
+        if (PasswordIndex < 5)
+        { 
+            //set the current text to be the one entered 
+            if (PasswordIndex == 1)
+            {
+                Password[0] = key;
+                PasswordSymbol1.GetComponentInChildren<Text>().text = key.ToString();
+                PasswordIndex++;
+            }
+            else if (PasswordIndex == 2)
+            {
+                Password[1] = key;
+                PasswordSymbol2.GetComponentInChildren<Text>().text = key.ToString();
+                PasswordIndex++;
+            }
+            else if (PasswordIndex == 3)
+            {
+                Password[2] = key;
+                PasswordSymbol3.GetComponentInChildren<Text>().text = key.ToString();
+                PasswordIndex++;
+            }
+            else if (PasswordIndex == 4)
+            {
+                Password[3] = key;
+                PasswordSymbol4.GetComponentInChildren<Text>().text = key.ToString();
+                PasswordIndex++;
+            }
+        }
+    }
+
+    public void CheckForSymbolicInput(GameObject obj)
+    {
+        if (obj.CompareTag("1"))
+        {
+            EnterKey(1);
+        }
+        else if (obj.CompareTag("2"))
+        {
+            EnterKey(2);
+        }
+        else if (obj.CompareTag("3"))
+        {
+            EnterKey(3);
+        }
+        else if (obj.CompareTag("4"))
+        {
+            EnterKey(4);
+        }
+        else if (obj.CompareTag("5"))
+        {
+            EnterKey(5);
+        }
+        else if (obj.CompareTag("6"))
+        {
+            EnterKey(6);
+        }
+        else if (obj.CompareTag("7"))
+        {
+            EnterKey(7);
+        }
+        else if (obj.CompareTag("8"))
+        {
+            EnterKey(8);
+        }
+        else if (obj.CompareTag("9"))
+        {
+            EnterKey(9);
+        }
+        else if (obj.CompareTag("0"))
+        {
+            EnterKey(0);
+        }
+        else if (obj.CompareTag("delete_key"))
+        {
+            EnterKey(10);
+        }
+        else if (obj.CompareTag("enter_key"))
+        {
+            EnterKey(11);
+        }
+    }
 
 
 

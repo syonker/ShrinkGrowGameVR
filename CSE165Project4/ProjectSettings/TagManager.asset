@@ -24,6 +24,7 @@ TagManager:
   - 8
   - 9
   - enter_key
+  - Scene1Exit
   layers:
   - Default
   - TransparentFX
