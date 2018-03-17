@@ -6,7 +6,6 @@ public class InputManager : MonoBehaviour {
 
     //hard set
     public GameObject Player;
-    public GameObject World;
     public GameObject Ground;
     public GameObject RightHand;
     public GameObject LeftHand;
@@ -17,26 +16,20 @@ public class InputManager : MonoBehaviour {
     public GameObject Watermelon;
     public GameObject Door;
     public GameObject ForceField;
+    public GameObject GameplayManager;
 
     //accessed by other methods
     public int SizeState = 2;
     public bool ShrimpGrabbed = false;
     public bool WatermelonGrabbed = false;
     public bool HandInWall = false;
+    public float SizeChange = 6.0f;
+    public float PlayerHeightOffset = 0.5f;
 
     //method only
     private LineRenderer Line;
 	private bool firstLeftTrigger;
 	private bool firstRightTrigger;
-    private float SmallToMedium = 50.0f;
-
-    //for 1st stage
-    //private float MediumToLarge = 6.0f;
-
-    //for 2nd stage
-    private float MediumToLarge = (10.0f/4.0f)*6.0f;
-
-    private float PlayerHeightOffset = 0.5f;
     private Vector3 OGShrimpPos;
     private Quaternion OGShrimpRot;
     private Vector3 OGWatermelonPos;
@@ -162,7 +155,7 @@ public class InputManager : MonoBehaviour {
         //A button pressed once
         if (OVRInput.GetDown (OVRInput.Button.One))
         {
-            if (SizeState > 1)
+            if (SizeState > 2)
             {
                 DecreaseSize();
             }
@@ -174,6 +167,15 @@ public class InputManager : MonoBehaviour {
             if (SizeState < 3)
             {
                 IncreaseSize();
+            }
+        }
+
+        //B button pressed once
+        else if (OVRInput.GetDown(OVRInput.Button.Three))
+        {
+            if (SizeState == 2)
+            {
+                GameplayManager.GetComponent<GameplayManager>().OpenScene2();
             }
         }
 
@@ -231,13 +233,16 @@ public class InputManager : MonoBehaviour {
             Vector3 newPos = new Vector3(hit.point.x, hit.point.y + offset, hit.point.z);
             Player.transform.position = newPos;
         }
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Scene1Exit"))
+        {
+            GameplayManager.GetComponent<GameplayManager>().OpenScene2();
+        }
     }
 
 
     public void MoveBelt()
     {
 
-        //Debug.Log("Head: " + Headset.transform.localPosition.y);
         if (Headset.transform.localPosition.y < -0.25f) {
             Belt.SetActive(false);
             return;
@@ -254,12 +259,6 @@ public class InputManager : MonoBehaviour {
         offset = (Player.transform.localScale.x * 0.2f) * Belt.transform.right;
         Belt.transform.position = Belt.transform.position + offset;
 
-        /*
-        if (!ShrimpGrabbed)
-        {
-
-        }
-        */
     }
 
     public void ResetShrimp()
@@ -312,24 +311,12 @@ public class InputManager : MonoBehaviour {
 
         SizeState++;
 
-        //Medium to Large
-        if (SizeState == 3)
-        {
-            Player.transform.localScale = Player.transform.localScale * MediumToLarge;
-            Line.startWidth = Line.startWidth * MediumToLarge;
-            Line.endWidth = Line.endWidth * MediumToLarge;
-        }
-        //Small to Medium
-        else
-        {
-            Player.transform.localScale = Player.transform.localScale * SmallToMedium;
-            Line.startWidth = Line.startWidth * SmallToMedium;
-            Line.endWidth = Line.endWidth * SmallToMedium;
-        }
+        Player.transform.localScale = Player.transform.localScale * SizeChange;
+        Line.startWidth = Line.startWidth * SizeChange;
+        Line.endWidth = Line.endWidth * SizeChange;
 
         Vector3 shiftUp = new Vector3(Player.transform.position.x, Player.transform.localScale.y, Player.transform.position.z);
         Player.transform.position = shiftUp;
-
         PlayerController.GetComponent<CharacterController>().radius /= Player.transform.localScale.y;
 
     }
@@ -337,37 +324,45 @@ public class InputManager : MonoBehaviour {
     //Decrease the players size
     public void DecreaseSize()
     {
-        if (SizeState == 1)
+        if (SizeState == 2)
         {
             return;
         }
 
         SizeState--;
 
-        //Large to Medium
-        if (SizeState == 2)
-        {
-            Player.transform.localScale = Player.transform.localScale / MediumToLarge;
-            Line.startWidth = Line.startWidth / MediumToLarge;
-            Line.endWidth = Line.endWidth / MediumToLarge;
-        }
-        //Medium to Small
-        else
-        {
-            Player.transform.localScale = Player.transform.localScale / SmallToMedium;
-            Line.startWidth = Line.startWidth / SmallToMedium;
-            Line.endWidth = Line.endWidth / SmallToMedium;
-        }
+        Player.transform.localScale = Player.transform.localScale / SizeChange;
+        Line.startWidth = Line.startWidth / SizeChange;
+        Line.endWidth = Line.endWidth / SizeChange;
 
         Vector3 shiftDown = new Vector3(Player.transform.position.x, Player.transform.localScale.y, Player.transform.position.z);
         Player.transform.position = shiftDown;
-
         PlayerController.GetComponent<CharacterController>().radius *= Player.transform.localScale.y;
-
 
     }
 
 
+    public void IncreaseSizeScene2()
+    {
+        if (SizeState == 3)
+        {
+            return;
+        }
+
+        SizeState++;
+
+        Player.transform.localScale = Player.transform.localScale * SizeChange;
+
+        Line.startWidth = Line.startWidth / (6.0f*PlayerHeightOffset);
+        Line.endWidth = Line.endWidth / (6.0f* PlayerHeightOffset);
+        Line.startWidth = Line.startWidth * SizeChange;
+        Line.endWidth = Line.endWidth * SizeChange;
+
+        Vector3 shiftUp = new Vector3(Player.transform.position.x, Player.transform.localScale.y, Player.transform.position.z);
+        Player.transform.position = shiftUp;
+        PlayerController.GetComponent<CharacterController>().radius /= Player.transform.localScale.y;
+
+    }
 
 
     public void DoorOpen()
