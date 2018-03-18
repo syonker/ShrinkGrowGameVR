@@ -49,6 +49,7 @@ public class InputManager : MonoBehaviour {
     private Vector3 Hole2Forward;
     private int PasswordIndex = 1;
     private int[] Password;
+    private GameObject lastFloor;
 
 
     // Use this for initialization
@@ -83,6 +84,8 @@ public class InputManager : MonoBehaviour {
         {
             Password[i] = 0;
         }
+
+        lastFloor = Ground;
 
 
     }
@@ -283,13 +286,21 @@ public class InputManager : MonoBehaviour {
 
         if (hitSomething && hit.collider.gameObject.CompareTag("Floor"))
         {
-            float offset = Player.transform.position.y - Ground.transform.position.y;
+            float offset = Player.transform.localScale.y;
             Vector3 newPos = new Vector3(hit.point.x, hit.point.y + offset, hit.point.z);
             Player.transform.position = newPos;
+            lastFloor = hit.collider.gameObject;
         }
         else if (hitSomething && hit.collider.gameObject.CompareTag("Scene1Exit"))
         {
             GameplayManager.GetComponent<GameplayManager>().OpenScene2();
+        }
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Stackable") && SizeState == 2)
+        {
+            float offset = Player.transform.localScale.y;
+            Vector3 newPos = new Vector3(hit.point.x, hit.point.y + offset, hit.point.z);
+            Player.transform.position = newPos;
+            lastFloor = hit.collider.gameObject;
         }
         //check for symbolic input
         else if (hitSomething)
@@ -364,6 +375,11 @@ public class InputManager : MonoBehaviour {
     public void IncreaseSize()
     {
         if (SizeState == 3)
+        {
+            return;
+        }
+
+        if (lastFloor.CompareTag("Stackable"))
         {
             return;
         }
