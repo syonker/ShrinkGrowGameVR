@@ -61,9 +61,9 @@ public class GameplayManager : MonoBehaviour {
         Player.transform.position = StartPos3;
 
         //Testing symbolic input
-        Player.transform.position = new Vector3(InputManager.GetComponent<InputManager>().delete_key.transform.position.x, 
-            InputManager.GetComponent<InputManager>().delete_key.transform.position.y + Player.transform.localScale.y, 
-            InputManager.GetComponent<InputManager>().delete_key.transform.position.z);
+       // Player.transform.position = new Vector3(InputManager.GetComponent<InputManager>().delete_key.transform.position.x, 
+       //     InputManager.GetComponent<InputManager>().delete_key.transform.position.y + Player.transform.localScale.y, 
+       //     InputManager.GetComponent<InputManager>().delete_key.transform.position.z);
     }
 
 
