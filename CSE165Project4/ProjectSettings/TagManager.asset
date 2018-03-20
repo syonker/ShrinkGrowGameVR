@@ -25,6 +25,12 @@ TagManager:
   - 9
   - enter_key
   - Scene1Exit
+  - Stackable
+  - Hole1
+  - Hole2
+  - Hole3
+  - Hole4
+  - Hole5
   layers:
   - Default
   - TransparentFX

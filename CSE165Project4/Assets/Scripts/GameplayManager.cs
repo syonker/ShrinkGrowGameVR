@@ -9,6 +9,7 @@ public class GameplayManager : MonoBehaviour {
     public GameObject InputManager;
     public GameObject DirectionalLight;
     public GameObject StackablesParent;
+   
     
 
     //accessed by other methods
@@ -81,13 +82,16 @@ public class GameplayManager : MonoBehaviour {
         SceneNumber = 3;
 
         Player.transform.position = StartPos3;
+        Player.transform.position = new Vector3(StartPos3.x, StartPos3.y * InputManager.GetComponent<InputManager>().PlayerHeightOffset, StartPos3.z);
+
+        InputManager.GetComponent<InputManager>().DecreaseSize();
 
         DirectionalLight.SetActive(true);
 
         //Testing symbolic input
-         Player.transform.position = new Vector3(InputManager.GetComponent<InputManager>().delete_key.transform.position.x, 
+         /*Player.transform.position = new Vector3(InputManager.GetComponent<InputManager>().delete_key.transform.position.x, 
              InputManager.GetComponent<InputManager>().delete_key.transform.position.y + Player.transform.localScale.y, 
-             InputManager.GetComponent<InputManager>().delete_key.transform.position.z);
+             InputManager.GetComponent<InputManager>().delete_key.transform.position.z);*/
     }
 
 

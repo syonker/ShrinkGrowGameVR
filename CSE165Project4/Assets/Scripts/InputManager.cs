@@ -23,6 +23,11 @@ public class InputManager : MonoBehaviour {
     public Canvas PasswordSymbol3;
     public Canvas PasswordSymbol4;
     public GameObject delete_key;
+    public GameObject Hole1;
+    public GameObject Hole2;
+    public GameObject Hole3;
+    public GameObject Hole4;
+    public GameObject Hole5;
 
     //accessed by other methods
     public int SizeState = 2;
@@ -31,6 +36,7 @@ public class InputManager : MonoBehaviour {
     public bool HandInWall = false;
     public float SizeChange = 6.0f;
     public float PlayerHeightOffset = 0.5f;
+    private GameObject LastHit = null;
 
 
 
@@ -50,6 +56,7 @@ public class InputManager : MonoBehaviour {
     private int PasswordIndex = 1;
     private int[] Password;
     private GameObject lastFloor;
+    
 
 
     // Use this for initialization
@@ -96,7 +103,7 @@ public class InputManager : MonoBehaviour {
     {
 
         //Teleport between holes Scene 3
-        if(GameplayManager.GetComponent<GameplayManager>().SceneNumber == 3)
+        /*if(GameplayManager.GetComponent<GameplayManager>().SceneNumber == 3)
         {
             float dist = (Player.transform.position - Hole1Pos).magnitude;
 
@@ -106,7 +113,7 @@ public class InputManager : MonoBehaviour {
                 Player.transform.position = new Vector3(Hole2Pos.x, Hole2Pos.y + Player.transform.localScale.y, Hole2Pos.z);
                 Player.transform.forward = Hole2Forward;
             }
-        }
+        }*/
 
 
 
@@ -284,8 +291,23 @@ public class InputManager : MonoBehaviour {
         RaycastHit hit;
         bool hitSomething = Physics.Raycast(RightHand.transform.position, RightHand.transform.forward, out hit);
 
+        //reset position if necessary
+        if (LastHit && GameplayManager.GetComponent<GameplayManager>().SceneNumber == 3)
+        {
+            if (LastHit.CompareTag("Stackable") && hit.collider.gameObject.CompareTag("Floor"))
+            {
+                Player.transform.position = new Vector3(Hole2.transform.position.x, Hole2.transform.position.y + Player.transform.localScale.y + 3, Hole2.transform.position.z);
+                Player.transform.forward = Hole2.transform.right;
+                LastHit = hit.collider.gameObject;
+                return;
+            }
+        }
+
+
         if (hitSomething && hit.collider.gameObject.CompareTag("Floor"))
         {
+            Debug.Log("Hit Floor");
+
             float offset = Player.transform.localScale.y;
             Vector3 newPos = new Vector3(hit.point.x, hit.point.y + offset, hit.point.z);
             Player.transform.position = newPos;
@@ -295,18 +317,59 @@ public class InputManager : MonoBehaviour {
         {
             GameplayManager.GetComponent<GameplayManager>().OpenScene2();
         }
-        else if (hitSomething && hit.collider.gameObject.CompareTag("Stackable") && SizeState == 2)
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Stackable") && SizeState == 2 )
         {
             float offset = Player.transform.localScale.y;
             Vector3 newPos = new Vector3(hit.point.x, hit.point.y + offset, hit.point.z);
             Player.transform.position = newPos;
             lastFloor = hit.collider.gameObject;
         }
+
+        //scene 3 only 
+        //else if (GameplayManager.GetComponent<GameplayManager>().SceneNumber == 3) { 
+
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole1"))
+        {
+
+            Debug.Log("Hole1");
+            //move to hole 2
+            Player.transform.position = new Vector3(Hole2.transform.position.x, Hole2.transform.position.y + Player.transform.localScale.y, Hole2.transform.position.z);
+            Player.transform.forward = Hole2.transform.right;
+        }
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole2"))
+        {
+            //move to hole 1
+            Player.transform.position = new Vector3(Hole1.transform.position.x, Hole1.transform.position.y + Player.transform.localScale.y, Hole1.transform.position.z);
+            Player.transform.forward = Hole1.transform.right;
+        }
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole3"))
+        {
+            //move to hole 5
+            Player.transform.position = new Vector3(Hole5.transform.position.x, Hole5.transform.position.y + Player.transform.localScale.y, Hole5.transform.position.z);
+            Player.transform.forward = Hole5.transform.forward;
+        }
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole4"))
+        {
+            //move to hole 5
+            Player.transform.position = new Vector3(Hole5.transform.position.x, Hole5.transform.position.y + Player.transform.localScale.y, Hole5.transform.position.z);
+            Player.transform.forward = -Hole5.transform.right;
+        }
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole5"))
+        {
+            //move to hole 3
+            Player.transform.position = new Vector3(Hole3.transform.position.x, Hole3.transform.position.y + Player.transform.localScale.y, Hole3.transform.position.z);
+            Player.transform.forward = -Hole3.transform.right;
+        }
         //check for symbolic input
         else if (hitSomething)
         {
             CheckForSymbolicInput(hit.collider.gameObject);
         }
+        // }
+
+
+
+        LastHit = hit.collider.gameObject;
     }
 
 
