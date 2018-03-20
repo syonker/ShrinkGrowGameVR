@@ -9,8 +9,24 @@ public class GameplayManager : MonoBehaviour {
     public GameObject InputManager;
     public GameObject DirectionalLight;
     public GameObject StackablesParent;
-   
-    
+    public GameObject LaserStartZone;
+    public GameObject LaserEndZone;
+    public GameObject LaserParent;
+    public GameObject DoorOpen;
+    public GameObject DoorClose;
+    public GameObject HandMap;
+
+    public GameObject key1;
+    public GameObject key2;
+    public GameObject key3;
+    public GameObject key4;
+    public GameObject key5;
+    public GameObject minikey1;
+    public GameObject minikey2;
+    public GameObject minikey3;
+    public GameObject minikey4;
+    public GameObject minikey5;
+
 
     //accessed by other methods
     public int SceneNumber;
@@ -18,11 +34,16 @@ public class GameplayManager : MonoBehaviour {
 
     //private
     private Vector3 StartPos2 = new Vector3(-26300.0f, 6.0f, 8720.0f);
+    //private Vector3 StartPos2 = new Vector3(-24748.9f, 6.0f, 9437.74f);
+    //private Vector3 StartPos2 = new Vector3(-24748.9f, 6.0f, 11589.68f);
+
     private Vector3 StartPos3 = new Vector3(-20580.0f, 6.0f, 27537.0f);
     private bool StairsFrozen = false;
+    private Material skybox;
+    private int KeyCount = 0;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -81,6 +102,8 @@ public class GameplayManager : MonoBehaviour {
     {
         SceneNumber = 3;
 
+        HandMap.SetActive(false);
+
         Player.transform.position = StartPos3;
         Player.transform.position = new Vector3(StartPos3.x, StartPos3.y * InputManager.GetComponent<InputManager>().PlayerHeightOffset, StartPos3.z);
 
@@ -117,6 +140,62 @@ public class GameplayManager : MonoBehaviour {
 
         }
     }
+
+
+
+    public void LaserStart()
+    {
+        Destroy(LaserStartZone);
+
+        skybox = RenderSettings.skybox;
+        RenderSettings.skybox = null;
+
+        LaserParent.SetActive(true);
+    }
+
+    public void LaserEnd()
+    {
+        Destroy(LaserEndZone);
+
+        RenderSettings.skybox = skybox;
+
+        LaserParent.SetActive(false);
+    }
+
+    public void KeyPickup(GameObject Key)
+    {
+        if (Key == key1)
+        {
+            Destroy(minikey1);
+        }
+        else if (Key == key2)
+        {
+            Destroy(minikey2);
+        }
+        else if (Key == key3)
+        {
+            Destroy(minikey3);
+        }
+        else if (Key == key4)
+        {
+            Destroy(minikey4);
+        }
+        else if (Key == key5)
+        {
+            Destroy(minikey5);
+        }
+        Destroy(Key);
+        KeyCount++;
+        if (KeyCount == 1)
+        {
+            DoorClose.SetActive(false);
+            DoorOpen.SetActive(true);
+        }
+    }
+
+
+
+
 
 
 }

@@ -306,7 +306,7 @@ public class InputManager : MonoBehaviour {
 
         if (hitSomething && hit.collider.gameObject.CompareTag("Floor"))
         {
-            Debug.Log("Hit Floor");
+            //Debug.Log("Hit Floor");
 
             float offset = Player.transform.localScale.y;
             Vector3 newPos = new Vector3(hit.point.x, hit.point.y + offset, hit.point.z);
@@ -323,6 +323,28 @@ public class InputManager : MonoBehaviour {
             Vector3 newPos = new Vector3(hit.point.x, hit.point.y + offset, hit.point.z);
             Player.transform.position = newPos;
             lastFloor = hit.collider.gameObject;
+        }
+        else if (hitSomething && hit.collider.gameObject.CompareTag("LaserStart"))
+        {
+            float offset = Player.transform.localScale.y;
+            Vector3 newPos = new Vector3(-24749.0f, offset, 9567.4f);
+            Player.transform.position = newPos;
+            lastFloor = hit.collider.gameObject;
+
+            GameplayManager.GetComponent<GameplayManager>().LaserStart();
+        }
+        else if (hitSomething && hit.collider.gameObject.CompareTag("LaserEnd"))
+        {
+            float offset = Player.transform.localScale.y;
+            Vector3 newPos = new Vector3(-24757.5f, offset, 11286.9f);
+            Player.transform.position = newPos;
+            lastFloor = hit.collider.gameObject;
+
+            GameplayManager.GetComponent<GameplayManager>().LaserEnd();
+        }
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Scene2Exit"))
+        {
+            GameplayManager.GetComponent<GameplayManager>().OpenScene3();
         }
 
         //scene 3 only 

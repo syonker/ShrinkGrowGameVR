@@ -29,7 +29,7 @@ using UnityEngine;
 public class OVRGrabber : MonoBehaviour
 {
 
-
+    public GameObject GameplayManager;
     public GameObject InputManager;
     public GameObject Player;
 
@@ -293,6 +293,19 @@ public class OVRGrabber : MonoBehaviour
             int Size = InputManager.GetComponent<InputManager>().SizeState;
             if (Size != 3 && grabbed.CompareTag("Large")) return;
             if (Size == 1 && grabbed.CompareTag("Medium")) return;
+
+            if (grabbed.CompareTag("Key"))
+            {
+                GameplayManager.GetComponent<GameplayManager>().KeyPickup(grabbed);
+                return;
+            }
+
+            if (grabbed.CompareTag("Map"))
+            {
+                Destroy(grabbed);
+                GameplayManager.GetComponent<GameplayManager>().HandMap.SetActive(true);
+                return;
+            }
 
             if (grabbed.CompareTag("Shrimp")) InputManager.GetComponent<InputManager>().ShrimpGrabbed = true;
             if (grabbed.CompareTag("Watermelon")) InputManager.GetComponent<InputManager>().WatermelonGrabbed = true;
