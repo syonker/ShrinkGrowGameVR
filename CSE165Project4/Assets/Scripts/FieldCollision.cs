@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class FieldCollision : MonoBehaviour {
 
+    public GameObject AudioManager;
+    public GameObject Building;
+
     public Material crack0;
     public Material crack1;
     public Material crack2;
@@ -32,8 +35,10 @@ public class FieldCollision : MonoBehaviour {
         {
             Crack();
 
+            Building.GetComponent<AudioSource>().Play();
+
             //explode car
-            Destroy(other.gameObject);
+            other.gameObject.GetComponent<Explode>().MakeExplode();
 
         }
 
@@ -57,6 +62,7 @@ public class FieldCollision : MonoBehaviour {
 
     public void Break()
     {
+        AudioManager.GetComponent<AudioManagement>().Play("LaserOn");
         this.gameObject.SetActive(false);
     }
 

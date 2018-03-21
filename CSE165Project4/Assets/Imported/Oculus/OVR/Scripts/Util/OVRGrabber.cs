@@ -28,7 +28,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class OVRGrabber : MonoBehaviour
 {
-
+    public GameObject AudioManager;
     public GameObject GameplayManager;
     public GameObject InputManager;
     public GameObject Player;
@@ -407,11 +407,16 @@ public class OVRGrabber : MonoBehaviour
                 GrabbableRelease(Vector3.zero, Vector3.zero);
                 GrabVolumeEnable(true);
                 return;
+            } else if (grabbed.CompareTag("Large"))
+            {
+                AudioManager.GetComponent<AudioManagement>().Play("Throw");
+
             }
-            //-----------------------------------------------------
+            
+                    //-----------------------------------------------------
 
 
-            OVRPose localPose = new OVRPose { position = OVRInput.GetLocalControllerPosition(m_controller), orientation = OVRInput.GetLocalControllerRotation(m_controller) };
+                    OVRPose localPose = new OVRPose { position = OVRInput.GetLocalControllerPosition(m_controller), orientation = OVRInput.GetLocalControllerRotation(m_controller) };
             OVRPose offsetPose = new OVRPose { position = m_anchorOffsetPosition, orientation = m_anchorOffsetRotation };
             localPose = localPose * offsetPose;
 

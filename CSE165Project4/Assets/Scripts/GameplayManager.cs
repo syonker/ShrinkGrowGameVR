@@ -6,6 +6,7 @@ public class GameplayManager : MonoBehaviour {
 
     //hard set
     public GameObject Player;
+    public GameObject AudioManager;
     public GameObject InputManager;
     public GameObject DirectionalLight;
     public GameObject StackablesParent;
@@ -33,14 +34,18 @@ public class GameplayManager : MonoBehaviour {
 
 
     //private
-    private Vector3 StartPos2 = new Vector3(-26300.0f, 6.0f, 8720.0f);
-    //private Vector3 StartPos2 = new Vector3(-24748.9f, 6.0f, 9437.74f);
+    //private Vector3 StartPos2 = new Vector3(-26300.0f, 6.0f, 8720.0f);
+    private Vector3 StartPos2 = new Vector3(-24748.9f, 6.0f, 9437.74f);
     //private Vector3 StartPos2 = new Vector3(-24748.9f, 6.0f, 11589.68f);
+
+    private Vector3 LaserStartPos = new Vector3(-24748.9f, 6.0f, 9437.74f);
+
 
     private Vector3 StartPos3 = new Vector3(-20580.0f, 6.0f, 27537.0f);
     private bool StairsFrozen = false;
     private Material skybox;
     private int KeyCount = 0;
+    private float countDown = 60f;
 
     // Use this for initialization
     void Start () {
@@ -49,6 +54,16 @@ public class GameplayManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        //if we are doing to laser trial
+        if (LaserParent.activeSelf)
+        {
+            countDown -= Time.deltaTime;
+            if (countDown <= 0f && LaserParent.activeSelf)
+            {
+                ResetLasers();
+            }
+        }
 		
         if (SceneNumber == 2)
         {
@@ -145,21 +160,43 @@ public class GameplayManager : MonoBehaviour {
 
     public void LaserStart()
     {
-        Destroy(LaserStartZone);
+        LaserStartZone.SetActive(false);
 
         skybox = RenderSettings.skybox;
         RenderSettings.skybox = null;
 
         LaserParent.SetActive(true);
+        AudioManager.GetComponent<AudioManagement>().Play("LaserOn");
+        AudioManager.GetComponent<AudioManagement>().Play("Countdown");
     }
 
     public void LaserEnd()
     {
+        AudioManager.GetComponent<AudioManagement>().Stop("Countdown");
+
         Destroy(LaserEndZone);
 
         RenderSettings.skybox = skybox;
 
         LaserParent.SetActive(false);
+        AudioManager.GetComponent<AudioManagement>().Play("LaserOn");
+    }
+
+    public void ResetLasers()
+    {
+        RenderSettings.skybox = skybox;
+        LaserParent.SetActive(false);
+        countDown = 60f;
+
+        LaserStartZone.SetActive(true);
+
+        InputManager.GetComponent<InputManager>().SizeState = 3;
+
+        Player.transform.position = LaserStartPos;
+        Player.transform.localScale = new Vector3(60.0f, 60.0f, 60.0f);
+        Player.transform.localScale = Player.transform.localScale * InputManager.GetComponent<InputManager>().PlayerHeightOffset;
+        Player.transform.position = new Vector3(LaserStartPos.x, Player.transform.localScale.y, LaserStartPos.z);
+        
     }
 
     public void KeyPickup(GameObject Key)

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class InputManager : MonoBehaviour {
 
     //hard set
+    public GameObject AudioManager;
     public GameObject Player;
     public GameObject Ground;
     public GameObject RightHand;
@@ -303,7 +304,7 @@ public class InputManager : MonoBehaviour {
             }
         }
 
-
+        //Debug.Log("HIt: " + hit.collider.gameObject.name);
         if (hitSomething && hit.collider.gameObject.CompareTag("Floor"))
         {
             //Debug.Log("Hit Floor");
@@ -435,11 +436,13 @@ public class InputManager : MonoBehaviour {
         {
             if (food.CompareTag("Shrimp"))
             {
+                AudioManager.GetComponent<AudioManagement>().Play("Eat");
                 DecreaseSize();
                 ResetShrimp();
 
             } else if (food.CompareTag("Watermelon"))
             {
+                AudioManager.GetComponent<AudioManagement>().Play("Eat");
                 IncreaseSize();
                 ResetWatermelon();
             } else
@@ -469,6 +472,8 @@ public class InputManager : MonoBehaviour {
             return;
         }
 
+        AudioManager.GetComponent<AudioManagement>().Play("Grow");
+
         SizeState++;
 
         Player.transform.localScale = Player.transform.localScale * SizeChange;
@@ -490,6 +495,8 @@ public class InputManager : MonoBehaviour {
         }
 
         SizeState--;
+
+        AudioManager.GetComponent<AudioManagement>().Play("Shrink");
 
         Player.transform.localScale = Player.transform.localScale / SizeChange;
         Line.startWidth = Line.startWidth / SizeChange;
@@ -534,6 +541,7 @@ public class InputManager : MonoBehaviour {
             if (dist < 40.0f)
             {
                 Door.GetComponent<Animation>().Play();
+                Door.GetComponent<AudioSource>().Play();
                 FirstDoor = false;
             }
         }

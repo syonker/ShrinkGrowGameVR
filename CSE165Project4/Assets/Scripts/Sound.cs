@@ -15,6 +15,8 @@ public class Sound {
 
     public bool loop;
 
+    public int priority;
+
     [HideInInspector]
     public AudioSource source;
 	
