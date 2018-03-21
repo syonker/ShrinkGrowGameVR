@@ -313,7 +313,7 @@ public class InputManager : MonoBehaviour {
             Player.transform.position = newPos;
             lastFloor = hit.collider.gameObject;
         }
-        else if (hitSomething && hit.collider.gameObject.CompareTag("Scene1Exit"))
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Scene1Exit") && SizeState == 2)
         {
             GameplayManager.GetComponent<GameplayManager>().OpenScene2();
         }
