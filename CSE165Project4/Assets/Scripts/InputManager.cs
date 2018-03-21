@@ -706,6 +706,92 @@ public class InputManager : MonoBehaviour {
     }
 
 
+   //computer screens
+
+    //Home Screen
+    public void OpenScreen2()
+    {
+        //close screen1
+
+        //change background material
+        //set buttons and text off
+
+        //open screen2
+
+        //enable buttons and text
+    }
+
+    //Netlfix Error Screen
+    public void OpenScreen3()
+    {
+        //close screen 2
+
+        //disable buttons and text
+
+        //open screen 3
+
+        //change background
+    }
+
+    //choose an application
+    public void OpenScreen4()
+    {
+        //close screen 2
+
+        //disable buttons and text
+
+        //open screen 4
+
+        //enable buttons and text
+    }
+
+    //schulze bio
+    public void OpenScreen5()
+    {
+        //close screen 4
+
+        //disable buttons and text
+
+        //open screen 5
+
+        //enable buttons and text
+    }
+
+    //sorry cant edit applications
+    public void OpenScreen6()
+    {
+        //close screen 4
+
+        //disable buttons and text
+
+        //open screen 6
+
+        //change background
+    }
+
+    //game over - you failed
+    public void OpenScreen7()
+    {
+        //close screen 5
+
+        //disable buttons and text
+
+        //open screen 7
+
+        //enable text 
+    }
+
+    //congrats you win
+    public void OpenScreen8()
+    {
+        //close screen 5
+
+        //dissable buttons and text
+
+        //open screen 8
+
+        //enable text
+    }
 
 
 
