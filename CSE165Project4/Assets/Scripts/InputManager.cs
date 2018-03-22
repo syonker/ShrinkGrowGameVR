@@ -19,16 +19,33 @@ public class InputManager : MonoBehaviour {
     public GameObject Door;
     public GameObject ForceField;
     public GameObject GameplayManager;
+
     public GameObject PasswordSymbol1;
     public Canvas PasswordSymbol2;
     public Canvas PasswordSymbol3;
     public Canvas PasswordSymbol4;
     public GameObject delete_key;
+
     public GameObject Hole1;
     public GameObject Hole2;
     public GameObject Hole3;
     public GameObject Hole4;
     public GameObject Hole5;
+
+    public GameObject Hole1Door;
+    public GameObject Hole2Door;
+    public GameObject Hole3Door;
+    public GameObject Hole4Door;
+    public GameObject Hole5Door;
+
+    public GameObject Screen1;
+    public GameObject Screen2;
+    public GameObject Screen3;
+    public GameObject Screen4;
+    public GameObject Screen5;
+    public GameObject Screen6;
+    public GameObject Screen7;
+    public GameObject Screen8;
 
     //accessed by other methods
     public int SizeState = 2;
@@ -38,8 +55,19 @@ public class InputManager : MonoBehaviour {
     public float SizeChange = 6.0f;
     public float PlayerHeightOffset = 0.5f;
     private GameObject LastHit = null;
+    private int CurrScreen = 1;
 
-
+    float time;
+    float endTime;
+    float StartHeight;
+    float EndHeight;
+    float HeightIncrement;
+    float CurrHeight;
+    float timeInc;
+    Vector3 ShiftUpGradual;
+    bool GradualIncreaseOn = false;
+    bool GradualDecreaseOn = false;
+    Vector3 InitialScale;
 
     //method only
     private LineRenderer Line;
@@ -118,8 +146,23 @@ public class InputManager : MonoBehaviour {
 
 
 
+        //gradual size change
+        if (GradualIncreaseOn)
+        {
+            time -= Time.deltaTime;
+            IncreaseSizeGradual();
+        }
 
-    
+        //gradual size change
+        if (GradualDecreaseOn)
+        {
+            time -= Time.deltaTime;
+            DecreaseSizeGradual();
+        }
+
+
+
+
 
         if (!ForceField.activeSelf)
         {
@@ -214,7 +257,8 @@ public class InputManager : MonoBehaviour {
         {
             if (SizeState > 2)
             {
-                DecreaseSize();
+               // DecreaseSize();
+                StartDecreaseSizeGradual();
             }
         }
 
@@ -223,7 +267,8 @@ public class InputManager : MonoBehaviour {
         {
             if (SizeState < 3)
             {
-                IncreaseSize();
+                //IncreaseSize();
+                StartIncreaseSizeGradual();
             }
         }
 
@@ -293,7 +338,7 @@ public class InputManager : MonoBehaviour {
         bool hitSomething = Physics.Raycast(RightHand.transform.position, RightHand.transform.forward, out hit);
 
         //reset position if necessary
-        if (LastHit && GameplayManager.GetComponent<GameplayManager>().SceneNumber == 3)
+       /* if (LastHit && GameplayManager.GetComponent<GameplayManager>().SceneNumber == 3)
         {
             if (LastHit.CompareTag("Stackable") && hit.collider.gameObject.CompareTag("Floor"))
             {
@@ -302,7 +347,7 @@ public class InputManager : MonoBehaviour {
                 LastHit = hit.collider.gameObject;
                 return;
             }
-        }
+        }*/
 
         //Debug.Log("HIt: " + hit.collider.gameObject.name);
         if (hitSomething && hit.collider.gameObject.CompareTag("Floor"))
@@ -351,7 +396,7 @@ public class InputManager : MonoBehaviour {
         //scene 3 only 
         //else if (GameplayManager.GetComponent<GameplayManager>().SceneNumber == 3) { 
 
-        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole1"))
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole1Door"))
         {
 
             Debug.Log("Hole1");
@@ -359,25 +404,25 @@ public class InputManager : MonoBehaviour {
             Player.transform.position = new Vector3(Hole2.transform.position.x, Hole2.transform.position.y + Player.transform.localScale.y, Hole2.transform.position.z - 20.0f);
             Player.transform.forward = Hole2.transform.right;
         }
-        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole2"))
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole2Door"))
         {
             //move to hole 1
             Player.transform.position = new Vector3(Hole1.transform.position.x + 20.0f, Hole1.transform.position.y + Player.transform.localScale.y, Hole1.transform.position.z);
             Player.transform.forward = Hole1.transform.right;
         }
-        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole3"))
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole3Door"))
         {
             //move to hole 5
             Player.transform.position = new Vector3(Hole5.transform.position.x, Hole5.transform.position.y + Player.transform.localScale.y, Hole5.transform.position.z + 20.0f);
             Player.transform.forward = Hole5.transform.forward;
         }
-        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole4"))
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole4Door"))
         {
             //move to hole 5
             Player.transform.position = new Vector3(Hole5.transform.position.x, Hole5.transform.position.y + Player.transform.localScale.y, Hole5.transform.position.z + 20.0f);
             Player.transform.forward = -Hole5.transform.right;
         }
-        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole5"))
+        else if (hitSomething && hit.collider.gameObject.CompareTag("Hole5Door"))
         {
             //move to hole 3
             Player.transform.position = new Vector3(Hole3.transform.position.x - 20.0f, Hole3.transform.position.y + Player.transform.localScale.y, Hole3.transform.position.z);
@@ -386,7 +431,12 @@ public class InputManager : MonoBehaviour {
         //check for symbolic input
         else if (hitSomething)
         {
-            CheckForSymbolicInput(hit.collider.gameObject);
+           bool IsSymbolicInput = CheckForSymbolicInput(hit.collider.gameObject);
+
+            if(!IsSymbolicInput)
+            {
+                CheckForScreenInput(hit.collider.gameObject);
+            }
         }
         // }
 
@@ -437,13 +487,15 @@ public class InputManager : MonoBehaviour {
             if (food.CompareTag("Shrimp"))
             {
                 AudioManager.GetComponent<AudioManagement>().Play("Eat");
-                DecreaseSize();
+                //DecreaseSize();
+                StartDecreaseSizeGradual();
                 ResetShrimp();
 
             } else if (food.CompareTag("Watermelon"))
             {
                 AudioManager.GetComponent<AudioManagement>().Play("Eat");
-                IncreaseSize();
+                //IncreaseSize();
+                StartIncreaseSizeGradual();
                 ResetWatermelon();
             } else
             {
@@ -460,6 +512,60 @@ public class InputManager : MonoBehaviour {
     }
 
     //Increase the players size
+    public void StartIncreaseSizeGradual()
+    {
+
+       
+
+        if (SizeState == 3)
+        {
+            return;
+        }
+
+        if (lastFloor.CompareTag("Stackable"))
+        {
+            return;
+        }
+
+        if (GradualIncreaseOn == false) GradualIncreaseOn = true;
+
+        //Debug.Log("start increasing gradual");
+
+        //AudioManager.GetComponent<AudioManagement>().Play("Grow");
+        time = 1.0f;
+        endTime = 0.0f;
+
+        //initialize gradual height increase
+
+        StartHeight = Player.transform.position.y;
+        EndHeight = Player.transform.localScale.y * SizeChange;
+        HeightIncrement = (EndHeight - StartHeight) / 60.0f;
+        CurrHeight = StartHeight;
+        timeInc = 1.0f;
+        InitialScale = Player.transform.localScale;
+
+    }
+
+    public void IncreaseSizeGradual()
+    {
+        
+        if (time < timeInc)
+        {
+            //Debug.Log("increasing: " + timeInc);
+            CurrHeight = CurrHeight + HeightIncrement;
+            //Debug.Log("curr height: " + CurrHeight);
+            ShiftUpGradual = new Vector3(Player.transform.position.x, CurrHeight, Player.transform.position.z);
+            Player.transform.position = ShiftUpGradual;
+            Player.transform.localScale = new Vector3(CurrHeight, CurrHeight, CurrHeight);
+            timeInc -= (1.0f / 60.0f);
+        }
+        if(time <= 0)
+        {
+            IncreaseSize();
+            GradualIncreaseOn = false;
+        }
+    }
+
     public void IncreaseSize()
     {
         if (SizeState == 3)
@@ -476,19 +582,104 @@ public class InputManager : MonoBehaviour {
 
         SizeState++;
 
-        Player.transform.localScale = Player.transform.localScale * SizeChange;
+        //Player.transform.localScale = Player.transform.localScale * SizeChange;
+
+        Player.transform.localScale = InitialScale * SizeChange;
+
         Line.startWidth = Line.startWidth * SizeChange;
         Line.endWidth = Line.endWidth * SizeChange;
 
         Vector3 shiftUp = new Vector3(Player.transform.position.x, Player.transform.localScale.y, Player.transform.position.z);
         Player.transform.position = shiftUp;
         PlayerController.GetComponent<CharacterController>().radius /= Player.transform.localScale.y;
+    }
 
+
+
+    //Increase the players size
+    public void StartDecreaseSizeGradual()
+    {
+
+
+        Debug.Log("start decrease size gradual");
+
+        if (SizeState == 2)
+        {
+            return;
+        }
+
+        if (GradualDecreaseOn == false) GradualDecreaseOn = true;
+
+        //Debug.Log("start increasing gradual");
+
+        //AudioManager.GetComponent<AudioManagement>().Play("Grow");
+        time = 1.0f;
+        endTime = 0.0f;
+
+        //initialize gradual height increase
+
+        StartHeight = Player.transform.position.y;
+        EndHeight = Player.transform.localScale.y / SizeChange;
+        HeightIncrement = (StartHeight - EndHeight) / 60.0f;
+        CurrHeight = StartHeight;
+        timeInc = 1.0f;
+        InitialScale = Player.transform.localScale;
+
+    }
+
+    public void DecreaseSizeGradual()
+    {
+
+
+        Debug.Log("descrease size gradual");
+        if (time < timeInc)
+        {
+            //Debug.Log("increasing: " + timeInc);
+            CurrHeight = CurrHeight - HeightIncrement;
+            //Debug.Log("curr height: " + CurrHeight);
+            ShiftUpGradual = new Vector3(Player.transform.position.x, CurrHeight, Player.transform.position.z);
+            Player.transform.position = ShiftUpGradual;
+            Player.transform.localScale = new Vector3(CurrHeight, CurrHeight, CurrHeight);
+            timeInc -= (1.0f / 60.0f);
+        }
+        if (time <= 0)
+        {
+            DecreaseSize();
+            GradualDecreaseOn = false;
+        }
     }
 
     //Decrease the players size
     public void DecreaseSize()
     {
+        Debug.Log("decrease size");
+        if (SizeState == 2)
+        {
+            return;
+        }
+
+        SizeState--;
+
+        AudioManager.GetComponent<AudioManagement>().Play("Shrink");
+
+        //Player.transform.localScale = Player.transform.localScale / SizeChange;
+
+        Player.transform.localScale = InitialScale / SizeChange;
+
+        Line.startWidth = Line.startWidth / SizeChange;
+        Line.endWidth = Line.endWidth / SizeChange;
+
+        Vector3 shiftDown = new Vector3(Player.transform.position.x, Player.transform.localScale.y, Player.transform.position.z);
+        Player.transform.position = shiftDown;
+        PlayerController.GetComponent<CharacterController>().radius *= Player.transform.localScale.y;
+
+    }
+
+
+    //Decrease the players size
+    public void DecreaseSizeScene3()
+    {
+        Debug.Log("decrease size");
         if (SizeState == 2)
         {
             return;
@@ -499,6 +690,9 @@ public class InputManager : MonoBehaviour {
         AudioManager.GetComponent<AudioManagement>().Play("Shrink");
 
         Player.transform.localScale = Player.transform.localScale / SizeChange;
+
+       // Player.transform.localScale = InitialScale / SizeChange;
+
         Line.startWidth = Line.startWidth / SizeChange;
         Line.endWidth = Line.endWidth / SizeChange;
 
@@ -507,7 +701,6 @@ public class InputManager : MonoBehaviour {
         PlayerController.GetComponent<CharacterController>().radius *= Player.transform.localScale.y;
 
     }
-
 
     public void IncreaseSizeScene2()
     {
@@ -595,7 +788,7 @@ public class InputManager : MonoBehaviour {
                 //check if password is correct:
                 if (Password[0] == 1 && Password[1] == 2 && Password[2] == 3 && Password[3] == 4)
                 {
-                    Debug.Log("You Win");
+                    OpenScreen2();
                 }
                 else
                 {
@@ -661,144 +854,194 @@ public class InputManager : MonoBehaviour {
         }
     }
 
-    public void CheckForSymbolicInput(GameObject obj)
+    public bool CheckForSymbolicInput(GameObject obj)
     {
         if (obj.CompareTag("1"))
         {
             EnterKey(1);
+            return true;
         }
         else if (obj.CompareTag("2"))
         {
             EnterKey(2);
+            return true;
         }
         else if (obj.CompareTag("3"))
         {
             EnterKey(3);
+            return true;
         }
         else if (obj.CompareTag("4"))
         {
             EnterKey(4);
+            return true;
         }
         else if (obj.CompareTag("5"))
         {
             EnterKey(5);
+            return true;
         }
         else if (obj.CompareTag("6"))
         {
             EnterKey(6);
+            return true;
         }
         else if (obj.CompareTag("7"))
         {
             EnterKey(7);
+            return true;
         }
         else if (obj.CompareTag("8"))
         {
             EnterKey(8);
+            return true;
         }
         else if (obj.CompareTag("9"))
         {
             EnterKey(9);
+            return true;
         }
         else if (obj.CompareTag("0"))
         {
             EnterKey(0);
+            return true;
         }
         else if (obj.CompareTag("delete_key"))
         {
             EnterKey(10);
+            return true;
         }
         else if (obj.CompareTag("enter_key"))
         {
             EnterKey(11);
+            return true;
         }
+        else return false;
     }
 
 
-   //computer screens
+    //computer screens
 
-    //Home Screen
-    public void OpenScreen2()
+    public void CheckForScreenInput(GameObject obj)
+    {
+        if (CurrScreen == 2)
+        {
+            if (obj.CompareTag("NetflixTile"))
+            {
+                OpenScreen3();
+            }
+            else if(obj.CompareTag("FundingTile"))
+            {
+                OpenScreen4();
+            }
+        }
+        else if (CurrScreen == 4)
+        {
+            if (obj.CompareTag("SchulzeTile"))
+            {
+                OpenScreen5();
+            }
+            else if(obj.CompareTag("NotSchulzeTile"))
+            {
+                OpenScreen6();
+            }
+        }
+        else if (CurrScreen == 5)
+        {
+            if (obj.CompareTag("AcceptTile"))
+            {
+                OpenScreen8();
+            }
+            else if (obj.CompareTag("DenyTile"))
+            {
+                OpenScreen7();
+            }
+        }
+        
+    }
+
+        //Home Screen
+        public void OpenScreen2()
     {
         //close screen1
-
-        //change background material
-        //set buttons and text off
+        Screen1.SetActive(false);
 
         //open screen2
+        Screen2.SetActive(true);
 
-        //enable buttons and text
+        CurrScreen = 2;
     }
 
     //Netlfix Error Screen
     public void OpenScreen3()
     {
         //close screen 2
-
-        //disable buttons and text
+        Screen2.SetActive(false);
 
         //open screen 3
+        Screen3.SetActive(true);
 
-        //change background
+        CurrScreen = 3;
     }
 
     //choose an application
     public void OpenScreen4()
     {
         //close screen 2
-
-        //disable buttons and text
+        Screen2.SetActive(false);
 
         //open screen 4
+        Screen4.SetActive(true);
 
-        //enable buttons and text
+        CurrScreen = 4;
     }
 
     //schulze bio
     public void OpenScreen5()
     {
         //close screen 4
-
-        //disable buttons and text
+        Screen4.SetActive(false);
 
         //open screen 5
+        Screen5.SetActive(true);
 
-        //enable buttons and text
+        CurrScreen = 5;
     }
 
     //sorry cant edit applications
     public void OpenScreen6()
     {
         //close screen 4
-
-        //disable buttons and text
+        Screen4.SetActive(false);
 
         //open screen 6
+        Screen6.SetActive(true);
 
-        //change background
+        CurrScreen = 6;
     }
 
     //game over - you failed
     public void OpenScreen7()
     {
         //close screen 5
-
-        //disable buttons and text
+        Screen5.SetActive(false);
 
         //open screen 7
+        Screen7.SetActive(true);
 
-        //enable text 
+        CurrScreen = 7;
     }
 
     //congrats you win
     public void OpenScreen8()
     {
         //close screen 5
-
-        //dissable buttons and text
+        Screen5.SetActive(false);
 
         //open screen 8
+        Screen8.SetActive(true);
 
-        //enable text
+        CurrScreen = 8;
     }
 
 

@@ -122,9 +122,9 @@ public class GameplayManager : MonoBehaviour {
         Player.transform.position = StartPos3;
         Player.transform.position = new Vector3(StartPos3.x, StartPos3.y * InputManager.GetComponent<InputManager>().PlayerHeightOffset, StartPos3.z);
 
-        InputManager.GetComponent<InputManager>().DecreaseSize();
+        InputManager.GetComponent<InputManager>().DecreaseSizeScene3();
 
-        DirectionalLight.SetActive(true);
+        DirectionalLight.SetActive(false);
 
         //Testing symbolic input
          /*Player.transform.position = new Vector3(InputManager.GetComponent<InputManager>().delete_key.transform.position.x, 

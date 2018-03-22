@@ -31,6 +31,22 @@ TagManager:
   - Hole3
   - Hole4
   - Hole5
+  - Key
+  - Map
+  - Scene2Exit
+  - LaserStart
+  - LaserEnd
+  - NetflixTile
+  - FundingTile
+  - SchulzeTile
+  - NotSchulzeTile
+  - AcceptTile
+  - DenyTile
+  - Hole1Door
+  - Hole2Door
+  - Hole3Door
+  - Hole4Door
+  - Hole5Door
   layers:
   - Default
   - TransparentFX
