@@ -176,6 +176,8 @@ public class GameplayManager : MonoBehaviour {
 
     public void LaserEnd()
     {
+
+        Debug.Log("Laser End");
         AudioManager.GetComponent<AudioManagement>().Stop("Countdown");
 
         Destroy(LaserEndZone);
@@ -191,6 +193,8 @@ public class GameplayManager : MonoBehaviour {
 
     public void ResetLasers()
     {
+        AudioManager.GetComponent<AudioManagement>().Stop("Countdown");
+
         RenderSettings.skybox = skybox;
         LaserParent.SetActive(false);
         countDown = 60f;
@@ -230,7 +234,7 @@ public class GameplayManager : MonoBehaviour {
         }
         Destroy(Key);
         KeyCount++;
-        if (KeyCount == 1)
+        if (KeyCount == 5)
         {
             DoorClose.SetActive(false);
             DoorOpen.SetActive(true);
