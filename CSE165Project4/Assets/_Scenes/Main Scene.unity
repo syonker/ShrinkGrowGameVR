@@ -8458,11 +8458,11 @@ MonoBehaviour:
   Hole3: {fileID: 1039825551}
   Hole4: {fileID: 1439088379}
   Hole5: {fileID: 884395475}
-  Hole1Door: {fileID: 0}
-  Hole2Door: {fileID: 0}
-  Hole3Door: {fileID: 0}
-  Hole4Door: {fileID: 0}
-  Hole5Door: {fileID: 0}
+  Hole1Door: {fileID: 1750391523}
+  Hole2Door: {fileID: 132953253}
+  Hole3Door: {fileID: 371144978}
+  Hole4Door: {fileID: 1743087388}
+  Hole5Door: {fileID: 1397837864}
   Screen1: {fileID: 1214465936}
   Screen2: {fileID: 1281684829}
   Screen3: {fileID: 994077672}
@@ -9646,7 +9646,7 @@ BoxCollider:
   m_GameObject: {fileID: 132953253}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -21502,7 +21502,7 @@ BoxCollider:
   m_GameObject: {fileID: 371144978}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -24497,7 +24497,7 @@ GameObject:
   - component: {fileID: 443069808}
   - component: {fileID: 443069807}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Roof
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24562,11 +24562,11 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 443069806}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20582, y: 95.909, z: 27572}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 61.61328, y: 62.322865, z: -116.18555}
   m_LocalScale: {x: 375.9064, y: 11.81893, z: 394.7507}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 575594516}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &443812681
@@ -33442,6 +33442,7 @@ Transform:
   - {fileID: 732933866}
   - {fileID: 1493576279}
   - {fileID: 1555543259}
+  - {fileID: 443069810}
   m_Father: {fileID: 1638009521}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -50608,7 +50609,7 @@ GameObject:
   - component: {fileID: 884395478}
   m_Layer: 0
   m_Name: Hole5
-  m_TagString: Hole5
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59066,7 +59067,7 @@ GameObject:
   - component: {fileID: 1039825554}
   m_Layer: 0
   m_Name: Hole3
-  m_TagString: Hole3
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82352,7 +82353,7 @@ BoxCollider:
   m_GameObject: {fileID: 1397837864}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -84573,7 +84574,7 @@ GameObject:
   - component: {fileID: 1439088382}
   m_Layer: 0
   m_Name: Hole4
-  m_TagString: Hole4
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101449,7 +101450,7 @@ BoxCollider:
   m_GameObject: {fileID: 1743087388}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -101944,7 +101945,7 @@ BoxCollider:
   m_GameObject: {fileID: 1750391523}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -102922,7 +102923,7 @@ GameObject:
   - component: {fileID: 1773065162}
   m_Layer: 0
   m_Name: Hole1
-  m_TagString: Hole1
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105769,7 +105770,7 @@ GameObject:
   - component: {fileID: 1811170114}
   m_Layer: 0
   m_Name: Hole2
-  m_TagString: Hole2
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
