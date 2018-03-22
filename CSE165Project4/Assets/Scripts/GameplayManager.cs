@@ -34,8 +34,8 @@ public class GameplayManager : MonoBehaviour {
 
 
     //private
-    //private Vector3 StartPos2 = new Vector3(-26300.0f, 6.0f, 8720.0f);
-    private Vector3 StartPos2 = new Vector3(-24748.9f, 6.0f, 9437.74f);
+    private Vector3 StartPos2 = new Vector3(-26300.0f, 6.0f, 8720.0f);
+    //private Vector3 StartPos2 = new Vector3(-24748.9f, 6.0f, 9437.74f);
     //private Vector3 StartPos2 = new Vector3(-24748.9f, 6.0f, 11589.68f);
 
     private Vector3 LaserStartPos = new Vector3(-24748.9f, 6.0f, 9437.74f);
@@ -125,11 +125,12 @@ public class GameplayManager : MonoBehaviour {
         InputManager.GetComponent<InputManager>().DecreaseSizeScene3();
 
         DirectionalLight.SetActive(false);
+        DirectionalLight.GetComponent<Light>().shadows = LightShadows.None;
 
         //Testing symbolic input
-         /*Player.transform.position = new Vector3(InputManager.GetComponent<InputManager>().delete_key.transform.position.x, 
-             InputManager.GetComponent<InputManager>().delete_key.transform.position.y + Player.transform.localScale.y, 
-             InputManager.GetComponent<InputManager>().delete_key.transform.position.z);*/
+        /*Player.transform.position = new Vector3(InputManager.GetComponent<InputManager>().delete_key.transform.position.x, 
+            InputManager.GetComponent<InputManager>().delete_key.transform.position.y + Player.transform.localScale.y, 
+            InputManager.GetComponent<InputManager>().delete_key.transform.position.z);*/
     }
 
 
@@ -180,6 +181,9 @@ public class GameplayManager : MonoBehaviour {
 
         LaserParent.SetActive(false);
         AudioManager.GetComponent<AudioManagement>().Play("LaserOn");
+
+        DirectionalLight.SetActive(true);
+        DirectionalLight.GetComponent<Light>().shadows = LightShadows.None;
     }
 
     public void ResetLasers()

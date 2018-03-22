@@ -426,9 +426,16 @@ public class OVRGrabber : MonoBehaviour
 
             float scale = Player.transform.localScale.y;
 
-            //if small need to increase the force here
+            if (GameplayManager.GetComponent<GameplayManager>().SceneNumber == 2)
+            {
+                GrabbableRelease(Vector3.zero, Vector3.zero);
+            }
+            else
+            {
+                GrabbableRelease(linearVelocity * scale, angularVelocity * scale);
+            }
 
-            GrabbableRelease(linearVelocity * scale, angularVelocity * scale);
+            
         }
 
         // Re-enable grab volumes to allow overlap events

@@ -244,8 +244,15 @@ public class InputManager : MonoBehaviour {
 
 
 
-
-
+        //turn left / right
+        if (OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick))
+        {
+            Player.transform.Rotate(0f, 90f, 0f);
+        }
+        else if (OVRInput.GetDown(OVRInput.Button.PrimaryThumbstick))
+        {
+            Player.transform.Rotate(0f, -90f, 0f);
+        }
 
 
 
