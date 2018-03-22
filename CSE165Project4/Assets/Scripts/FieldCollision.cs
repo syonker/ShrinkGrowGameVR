@@ -15,7 +15,7 @@ public class FieldCollision : MonoBehaviour {
 
 
     private int crackCount = 0;
-    private int breakLimit = 2;
+    private int breakLimit = 10;
     private Material[] cracks = new Material[5];
 
 
@@ -55,7 +55,24 @@ public class FieldCollision : MonoBehaviour {
         }
         else if (crackCount < breakLimit)
         {
-            this.GetComponent<MeshRenderer>().material = cracks[crackCount];
+            if (crackCount == 2)
+            {
+                this.GetComponent<MeshRenderer>().material = cracks[1];
+            }
+            else if (crackCount == 4)
+            {
+                this.GetComponent<MeshRenderer>().material = cracks[2];
+            }
+            else if (crackCount == 6)
+            {
+                this.GetComponent<MeshRenderer>().material = cracks[3];
+            }
+            else if (crackCount == 8)
+            {
+                this.GetComponent<MeshRenderer>().material = cracks[4];
+            }
+
+            //this.GetComponent<MeshRenderer>().material = cracks[crackCount];
         }
         
     }

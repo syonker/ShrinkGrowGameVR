@@ -296,8 +296,13 @@ public class OVRGrabber : MonoBehaviour
 
             if (grabbed.CompareTag("Key"))
             {
+                AudioManager.GetComponent<AudioManagement>().Play("Keypickup");
                 GameplayManager.GetComponent<GameplayManager>().KeyPickup(grabbed);
                 return;
+            }
+            else
+            {
+                AudioManager.GetComponent<AudioManagement>().Play("Pickup");
             }
 
             if (grabbed.CompareTag("Map"))

@@ -109,7 +109,10 @@ public class GameplayManager : MonoBehaviour {
         InputManager.GetComponent<InputManager>().SizeChange = 10.0f;
         InputManager.GetComponent<InputManager>().IncreaseSizeScene2();
 
-        DirectionalLight.SetActive(false);
+        //DirectionalLight.SetActive(false);
+
+        DirectionalLight.SetActive(true);
+        DirectionalLight.GetComponent<Light>().shadows = LightShadows.None;
 
     }
 
@@ -124,8 +127,8 @@ public class GameplayManager : MonoBehaviour {
 
         InputManager.GetComponent<InputManager>().DecreaseSizeScene3();
 
-        DirectionalLight.SetActive(false);
-        DirectionalLight.GetComponent<Light>().shadows = LightShadows.None;
+        //DirectionalLight.SetActive(false);
+        //DirectionalLight.GetComponent<Light>().shadows = LightShadows.None;
 
         //Testing symbolic input
         /*Player.transform.position = new Vector3(InputManager.GetComponent<InputManager>().delete_key.transform.position.x, 

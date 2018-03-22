@@ -20,6 +20,8 @@ public class InputManager : MonoBehaviour {
     public GameObject ForceField;
     public GameObject GameplayManager;
 
+    public GameObject Money;
+
     public GameObject PasswordSymbol1;
     public Canvas PasswordSymbol2;
     public Canvas PasswordSymbol3;
@@ -410,6 +412,8 @@ public class InputManager : MonoBehaviour {
             //move to hole 2
             Player.transform.position = new Vector3(Hole2.transform.position.x, Hole2.transform.position.y + Player.transform.localScale.y, Hole2.transform.position.z - 20.0f);
             Player.transform.forward = Hole2.transform.right;
+
+            AudioManager.GetComponent<AudioManagement>().Play("Mission");
         }
         else if (hitSomething && hit.collider.gameObject.CompareTag("Hole2Door"))
         {
@@ -751,6 +755,8 @@ public class InputManager : MonoBehaviour {
 
     public void EnterKey(int key)
     {
+        AudioManager.GetComponent<AudioManagement>().Play("Click");
+
         //delete key
         if(key == 10)
         {
@@ -1049,6 +1055,11 @@ public class InputManager : MonoBehaviour {
         Screen8.SetActive(true);
 
         CurrScreen = 8;
+
+        Debug.Log("MoneyDrop");
+        AudioManager.GetComponent<AudioManagement>().Stop("Mission");
+        AudioManager.GetComponent<AudioManagement>().Play("Cheer");
+        Money.SetActive(true);
     }
 
 

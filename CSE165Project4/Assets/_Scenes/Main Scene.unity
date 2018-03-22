@@ -7246,6 +7246,7 @@ MonoBehaviour:
   Door: {fileID: 1904091442}
   ForceField: {fileID: 606568845}
   GameplayManager: {fileID: 1697869070}
+  Money: {fileID: 1450150900}
   PasswordSymbol1: {fileID: 1239467481}
   PasswordSymbol2: {fileID: 259648075}
   PasswordSymbol3: {fileID: 801215380}
@@ -33722,7 +33723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d5ae3c8be825c74f8f8594e510cf419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AudioManager: {fileID: 0}
+  AudioManager: {fileID: 1771915458}
   Building: {fileID: 1683871179}
   crack0: {fileID: 0}
   crack1: {fileID: 2100000, guid: 77308f96c68e1e44f81febc7275d2658, type: 2}
@@ -60811,11 +60812,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4932611085010574, guid: fd435b1387accd64b878be8baca61b50, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -2.79
       objectReference: {fileID: 0}
     - target: {fileID: 4932611085010574, guid: fd435b1387accd64b878be8baca61b50, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -10.82
       objectReference: {fileID: 0}
     - target: {fileID: 4932611085010574, guid: fd435b1387accd64b878be8baca61b50, type: 2}
       propertyPath: m_LocalRotation.x
@@ -82861,6 +82862,11 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300018, guid: 49b5538ec8ddcb04594a375b62a58b73, type: 3}
+--- !u!1 &1450150900 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1841536046800776, guid: fd435b1387accd64b878be8baca61b50,
+    type: 2}
+  m_PrefabInternal: {fileID: 1071418617}
 --- !u!1 &1450925653
 GameObject:
   m_ObjectHideFlags: 0
@@ -103292,6 +103298,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114479007661440768, guid: fb57185728da4194eb9c564cd858e48b,
+        type: 2}
+      propertyPath: sounds.Array.size
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 4309939985490832, guid: fb57185728da4194eb9c564cd858e48b, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -103334,6 +103345,66 @@ Prefab:
       propertyPath: sounds.Array.data[6].clip
       value: 
       objectReference: {fileID: 8300000, guid: 01630eeaf461b5645ae8ef228ec00b3c, type: 3}
+    - target: {fileID: 114479007661440768, guid: fb57185728da4194eb9c564cd858e48b,
+        type: 2}
+      propertyPath: sounds.Array.data[8].name
+      value: Cheer
+      objectReference: {fileID: 0}
+    - target: {fileID: 114479007661440768, guid: fb57185728da4194eb9c564cd858e48b,
+        type: 2}
+      propertyPath: sounds.Array.data[8].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: c8e9aea23fccb124387c93eaf5f0560e, type: 3}
+    - target: {fileID: 114479007661440768, guid: fb57185728da4194eb9c564cd858e48b,
+        type: 2}
+      propertyPath: sounds.Array.data[8].volume
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114479007661440768, guid: fb57185728da4194eb9c564cd858e48b,
+        type: 2}
+      propertyPath: sounds.Array.data[8].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114479007661440768, guid: fb57185728da4194eb9c564cd858e48b,
+        type: 2}
+      propertyPath: sounds.Array.data[9].name
+      value: Click
+      objectReference: {fileID: 0}
+    - target: {fileID: 114479007661440768, guid: fb57185728da4194eb9c564cd858e48b,
+        type: 2}
+      propertyPath: sounds.Array.data[9].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 64cbd3ee4d1623541aaafc6fe0e93c1d, type: 3}
+    - target: {fileID: 114479007661440768, guid: fb57185728da4194eb9c564cd858e48b,
+        type: 2}
+      propertyPath: sounds.Array.data[9].volume
+      value: 0.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 114479007661440768, guid: fb57185728da4194eb9c564cd858e48b,
+        type: 2}
+      propertyPath: sounds.Array.data[9].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114479007661440768, guid: fb57185728da4194eb9c564cd858e48b,
+        type: 2}
+      propertyPath: sounds.Array.data[10].name
+      value: Mission
+      objectReference: {fileID: 0}
+    - target: {fileID: 114479007661440768, guid: fb57185728da4194eb9c564cd858e48b,
+        type: 2}
+      propertyPath: sounds.Array.data[10].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 86e97585f38798647857f2d3b8ddfe3b, type: 3}
+    - target: {fileID: 114479007661440768, guid: fb57185728da4194eb9c564cd858e48b,
+        type: 2}
+      propertyPath: sounds.Array.data[10].volume
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114479007661440768, guid: fb57185728da4194eb9c564cd858e48b,
+        type: 2}
+      propertyPath: sounds.Array.data[10].pitch
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fb57185728da4194eb9c564cd858e48b, type: 2}
   m_IsPrefabParent: 0
