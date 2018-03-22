@@ -109,10 +109,10 @@ public class GameplayManager : MonoBehaviour {
         InputManager.GetComponent<InputManager>().SizeChange = 10.0f;
         InputManager.GetComponent<InputManager>().IncreaseSizeScene2();
 
-        //DirectionalLight.SetActive(false);
+        DirectionalLight.SetActive(false);
 
-        DirectionalLight.SetActive(true);
-        DirectionalLight.GetComponent<Light>().shadows = LightShadows.None;
+        //DirectionalLight.SetActive(true);
+        //DirectionalLight.GetComponent<Light>().shadows = LightShadows.None;
 
     }
 
