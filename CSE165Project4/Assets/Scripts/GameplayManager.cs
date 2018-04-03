@@ -16,7 +16,6 @@ public class GameplayManager : MonoBehaviour {
     public GameObject DoorOpen;
     public GameObject DoorClose;
     public GameObject HandMap;
-
     public GameObject key1;
     public GameObject key2;
     public GameObject key3;
@@ -28,29 +27,18 @@ public class GameplayManager : MonoBehaviour {
     public GameObject minikey4;
     public GameObject minikey5;
 
-
     //accessed by other methods
     public int SceneNumber;
 
-
     //private
     private Vector3 StartPos2 = new Vector3(-26300.0f, 6.0f, 8720.0f);
-    //private Vector3 StartPos2 = new Vector3(-24748.9f, 6.0f, 9437.74f);
-    //private Vector3 StartPos2 = new Vector3(-24748.9f, 6.0f, 11589.68f);
-
     private Vector3 LaserStartPos = new Vector3(-24748.9f, 6.0f, 9437.74f);
-
-
+    private Vector3 MapStartPos = new Vector3(-24748.9f, 6.0f, 11589.68f);
     private Vector3 StartPos3 = new Vector3(-20580.0f, 6.0f, 27537.0f);
     private bool StairsFrozen = false;
     private Material skybox;
     private int KeyCount = 0;
     private float countDown = 60f;
-
-    // Use this for initialization
-    void Start () {
-		
-	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -84,9 +72,7 @@ public class GameplayManager : MonoBehaviour {
         }
 
 	}
-
-
-
+	
 
     public void OpenScene1()
     {
@@ -111,9 +97,6 @@ public class GameplayManager : MonoBehaviour {
 
         DirectionalLight.SetActive(false);
 
-        //DirectionalLight.SetActive(true);
-        //DirectionalLight.GetComponent<Light>().shadows = LightShadows.None;
-
     }
 
     public void OpenScene3()
@@ -127,13 +110,6 @@ public class GameplayManager : MonoBehaviour {
 
         InputManager.GetComponent<InputManager>().DecreaseSizeScene3();
 
-        //DirectionalLight.SetActive(false);
-        //DirectionalLight.GetComponent<Light>().shadows = LightShadows.None;
-
-        //Testing symbolic input
-        /*Player.transform.position = new Vector3(InputManager.GetComponent<InputManager>().delete_key.transform.position.x, 
-            InputManager.GetComponent<InputManager>().delete_key.transform.position.y + Player.transform.localScale.y, 
-            InputManager.GetComponent<InputManager>().delete_key.transform.position.z);*/
     }
 
 
@@ -240,9 +216,6 @@ public class GameplayManager : MonoBehaviour {
             DoorOpen.SetActive(true);
         }
     }
-
-
-
 
 
 
