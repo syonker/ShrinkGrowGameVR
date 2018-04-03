@@ -19,9 +19,8 @@ public class InputManager : MonoBehaviour {
     public GameObject Door;
     public GameObject ForceField;
     public GameObject GameplayManager;
-
     public GameObject Money;
-
+	
     public GameObject PasswordSymbol1;
     public Canvas PasswordSymbol2;
     public Canvas PasswordSymbol3;
@@ -59,6 +58,7 @@ public class InputManager : MonoBehaviour {
     private GameObject LastHit = null;
     private int CurrScreen = 1;
 
+    //grow and shrink animation
     float time;
     float endTime;
     float StartHeight;
@@ -73,8 +73,8 @@ public class InputManager : MonoBehaviour {
 
     //method only
     private LineRenderer Line;
-	private bool firstLeftTrigger;
-	private bool firstRightTrigger;
+    private bool firstLeftTrigger;
+    private bool firstRightTrigger;
     private Vector3 OGShrimpPos;
     private Quaternion OGShrimpRot;
     private Vector3 OGWatermelonPos;
@@ -133,21 +133,6 @@ public class InputManager : MonoBehaviour {
     void Update()
     {
 
-        //Teleport between holes Scene 3
-        /*if(GameplayManager.GetComponent<GameplayManager>().SceneNumber == 3)
-        {
-            float dist = (Player.transform.position - Hole1Pos).magnitude;
-
-            if(dist < 8.0f)
-            {
-                //move to hole 2
-                Player.transform.position = new Vector3(Hole2Pos.x, Hole2Pos.y + Player.transform.localScale.y, Hole2Pos.z);
-                Player.transform.forward = Hole2Forward;
-            }
-        }*/
-
-
-
         //gradual size change
         if (GradualIncreaseOn)
         {
@@ -162,21 +147,15 @@ public class InputManager : MonoBehaviour {
             DecreaseSizeGradual();
         }
 
-
-
-
-
         if (!ForceField.activeSelf)
         {
             DoorOpen();
         }
 
-
         if (!ShrimpGrabbed && !WatermelonGrabbed)
         {
             MoveBelt();
         }
-
 
         if (ShrimpGrabbed)
         {
@@ -187,24 +166,6 @@ public class InputManager : MonoBehaviour {
         {
             Eat(Watermelon);
         }
-
-
-        /*
-        //movement with left stick
-        Vector2 leftStick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
-        float vertical = leftStick.y;
-        float horizontal = leftStick.x;
-        Player.transform.position = Player.transform.position + Player.transform.forward * (vertical / 50) + Player.transform.right * (horizontal / 50);
-
-        //move view with right stick
-        Vector2 rightStick = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
-        vertical = rightStick.y;
-        horizontal = rightStick.x;
-        if (Mathf.Abs(horizontal) > Mathf.Abs(vertical))
-        {
-            Player.transform.RotateAround(Player.transform.position, Player.transform.up, horizontal);
-        }
-		*/
 
 
         //if left trigger is just pressed
@@ -240,12 +201,6 @@ public class InputManager : MonoBehaviour {
 
 
 
-
-
-
-
-
-
         //turn left / right
         if (OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick))
         {
@@ -255,8 +210,6 @@ public class InputManager : MonoBehaviour {
         {
             Player.transform.Rotate(0f, -90f, 0f);
         }
-
-
 
 
         //Handle temporary A Y B button presses
@@ -300,15 +253,6 @@ public class InputManager : MonoBehaviour {
 
 
 
-
-
-
-
-
-
-
-
-
     }
 
     //Turn on and off the Teleport Line
@@ -346,22 +290,9 @@ public class InputManager : MonoBehaviour {
         RaycastHit hit;
         bool hitSomething = Physics.Raycast(RightHand.transform.position, RightHand.transform.forward, out hit);
 
-        //reset position if necessary
-       /* if (LastHit && GameplayManager.GetComponent<GameplayManager>().SceneNumber == 3)
-        {
-            if (LastHit.CompareTag("Stackable") && hit.collider.gameObject.CompareTag("Floor"))
-            {
-                Player.transform.position = new Vector3(Hole2.transform.position.x, Hole2.transform.position.y + Player.transform.localScale.y + 3, Hole2.transform.position.z);
-                Player.transform.forward = Hole2.transform.right;
-                LastHit = hit.collider.gameObject;
-                return;
-            }
-        }*/
 
-        //Debug.Log("HIt: " + hit.collider.gameObject.name);
         if (hitSomething && hit.collider.gameObject.CompareTag("Floor"))
         {
-            //Debug.Log("Hit Floor");
 
             float offset = Player.transform.localScale.y;
             Vector3 newPos = new Vector3(hit.point.x, hit.point.y + offset, hit.point.z);
@@ -401,9 +332,6 @@ public class InputManager : MonoBehaviour {
         {
             GameplayManager.GetComponent<GameplayManager>().OpenScene3();
         }
-
-        //scene 3 only 
-        //else if (GameplayManager.GetComponent<GameplayManager>().SceneNumber == 3) { 
 
         else if (hitSomething && hit.collider.gameObject.CompareTag("Hole1Door"))
         {
@@ -449,9 +377,6 @@ public class InputManager : MonoBehaviour {
                 CheckForScreenInput(hit.collider.gameObject);
             }
         }
-        // }
-
-
 
         LastHit = hit.collider.gameObject;
     }
@@ -498,14 +423,12 @@ public class InputManager : MonoBehaviour {
             if (food.CompareTag("Shrimp"))
             {
                 AudioManager.GetComponent<AudioManagement>().Play("Eat");
-                //DecreaseSize();
                 StartDecreaseSizeGradual();
                 ResetShrimp();
 
             } else if (food.CompareTag("Watermelon"))
             {
                 AudioManager.GetComponent<AudioManagement>().Play("Eat");
-                //IncreaseSize();
                 StartIncreaseSizeGradual();
                 ResetWatermelon();
             } else
@@ -526,8 +449,6 @@ public class InputManager : MonoBehaviour {
     public void StartIncreaseSizeGradual()
     {
 
-       
-
         if (SizeState == 3)
         {
             return;
@@ -540,9 +461,6 @@ public class InputManager : MonoBehaviour {
 
         if (GradualIncreaseOn == false) GradualIncreaseOn = true;
 
-        //Debug.Log("start increasing gradual");
-
-        //AudioManager.GetComponent<AudioManagement>().Play("Grow");
         time = 1.0f;
         endTime = 0.0f;
 
@@ -562,9 +480,7 @@ public class InputManager : MonoBehaviour {
         
         if (time < timeInc)
         {
-            //Debug.Log("increasing: " + timeInc);
             CurrHeight = CurrHeight + HeightIncrement;
-            //Debug.Log("curr height: " + CurrHeight);
             ShiftUpGradual = new Vector3(Player.transform.position.x, CurrHeight, Player.transform.position.z);
             Player.transform.position = ShiftUpGradual;
             Player.transform.localScale = new Vector3(CurrHeight, CurrHeight, CurrHeight);
@@ -593,8 +509,6 @@ public class InputManager : MonoBehaviour {
 
         SizeState++;
 
-        //Player.transform.localScale = Player.transform.localScale * SizeChange;
-
         Player.transform.localScale = InitialScale * SizeChange;
 
         Line.startWidth = Line.startWidth * SizeChange;
@@ -621,14 +535,10 @@ public class InputManager : MonoBehaviour {
 
         if (GradualDecreaseOn == false) GradualDecreaseOn = true;
 
-        //Debug.Log("start increasing gradual");
-
-        //AudioManager.GetComponent<AudioManagement>().Play("Grow");
         time = 1.0f;
         endTime = 0.0f;
 
         //initialize gradual height increase
-
         StartHeight = Player.transform.position.y;
         EndHeight = Player.transform.localScale.y / SizeChange;
         HeightIncrement = (StartHeight - EndHeight) / 60.0f;
@@ -645,9 +555,7 @@ public class InputManager : MonoBehaviour {
         Debug.Log("descrease size gradual");
         if (time < timeInc)
         {
-            //Debug.Log("increasing: " + timeInc);
             CurrHeight = CurrHeight - HeightIncrement;
-            //Debug.Log("curr height: " + CurrHeight);
             ShiftUpGradual = new Vector3(Player.transform.position.x, CurrHeight, Player.transform.position.z);
             Player.transform.position = ShiftUpGradual;
             Player.transform.localScale = new Vector3(CurrHeight, CurrHeight, CurrHeight);
@@ -672,8 +580,6 @@ public class InputManager : MonoBehaviour {
         SizeState--;
 
         AudioManager.GetComponent<AudioManagement>().Play("Shrink");
-
-        //Player.transform.localScale = Player.transform.localScale / SizeChange;
 
         Player.transform.localScale = InitialScale / SizeChange;
 
@@ -701,8 +607,6 @@ public class InputManager : MonoBehaviour {
         AudioManager.GetComponent<AudioManagement>().Play("Shrink");
 
         Player.transform.localScale = Player.transform.localScale / SizeChange;
-
-       // Player.transform.localScale = InitialScale / SizeChange;
 
         Line.startWidth = Line.startWidth / SizeChange;
         Line.endWidth = Line.endWidth / SizeChange;
@@ -1061,17 +965,6 @@ public class InputManager : MonoBehaviour {
         AudioManager.GetComponent<AudioManagement>().Play("Cheer");
         Money.SetActive(true);
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
