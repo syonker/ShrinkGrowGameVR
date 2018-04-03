@@ -13,7 +13,6 @@ public class FieldCollision : MonoBehaviour {
     public Material crack3;
     public Material crack4;
 
-
     private int crackCount = 0;
     private int breakLimit = 10;
     private Material[] cracks = new Material[5];
@@ -72,7 +71,6 @@ public class FieldCollision : MonoBehaviour {
                 this.GetComponent<MeshRenderer>().material = cracks[4];
             }
 
-            //this.GetComponent<MeshRenderer>().material = cracks[crackCount];
         }
         
     }
@@ -84,13 +82,4 @@ public class FieldCollision : MonoBehaviour {
     }
 
 
-    void OnTriggerStay(Collider other)
-    {
-    }
-
-
-    void OnTriggerExit(Collider other)
-    {
-
-    }
 }
